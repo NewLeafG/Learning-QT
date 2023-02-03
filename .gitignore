@@ -1,0 +1,13 @@
+!*.*
+*.__i
+*.obj
+*.lst
+*.m51
+*.bak
+*.hex
+*.bin
+*.map
+*.AURORA
+*.plg
+*.map
+build-*/
