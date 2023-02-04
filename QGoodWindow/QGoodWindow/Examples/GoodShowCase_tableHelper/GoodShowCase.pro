@@ -20,7 +20,7 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
-QT += core gui widgets
+QT += core gui widgets serialport
 
 CONFIG += c++11
 

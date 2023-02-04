@@ -32,6 +32,7 @@ SOFTWARE.
 #include <QGoodCentralWidget>
 
 #include "ui_centralwidget.h"
+#include <QSerialPort>
 
 class CentralWidget : public QMainWindow
 {
@@ -47,7 +48,19 @@ public:
         delete ui;
     }
 
+void fillPortsInfo();
+void fillPortsParameters();
+
+QSerialPort *m_serial = nullptr;
+
     Ui::CentralWidget *ui;
+private slots:
+    void on_cb_serialPorts_activated(int index);
+
+
+    void on_btn_connect_clicked();
+    void on_btn_send_clicked();
+    void on_btn_clrReceive_clicked();
 };
 
 class MainWindow : public QGoodWindow
@@ -59,6 +72,7 @@ public:
 
 private slots:
     void themeChange();
+    void readData();
 
 private:
     //Functions
