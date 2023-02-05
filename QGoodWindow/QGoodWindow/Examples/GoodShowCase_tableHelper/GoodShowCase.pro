@@ -32,10 +32,12 @@ include($$PWD/../../QGoodCentralWidget/QGoodCentralWidget.pri)
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    msg_processer.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    msg_processer.h
 
 FORMS += \
     centralwidget.ui

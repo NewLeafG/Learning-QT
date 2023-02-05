@@ -316,16 +316,26 @@ else{
 
 void CentralWidget::on_btn_send_clicked()
 {
-    m_serial->write(ui->lineEdit_send->text().toUtf8());
+//    m_serial->write(ui->lineEdit_send->text().toUtf8());
+    QByteArray qbyte;
+    QString hex=(ui->lineEdit_send->text()).trimmed();
+
+        QStringList sl=hex.split(" ");
+        foreach(QString s,sl)
+        {
+            if(!s.isEmpty())
+                qbyte.append((char)s.toInt(0,16)&0xFF);
+        }
+    m_serial->write(qbyte);
 }
 
 void MainWindow::readData()
 {
     const QByteArray dataBA = m_central_widget->m_serial->readAll();
-    QString data(dataBA);
+//    QString data(dataBA);
 
 //    m_central_widget->ui->textBrowser_receive->append(data);
-    m_central_widget->ui->textBrowser_receive->insertPlainText(dataBA);
+    m_central_widget->ui->textBrowser_receive->append(dataBA.toHex(' ').toUpper());
 }
 
 void CentralWidget::on_btn_clrReceive_clicked()
