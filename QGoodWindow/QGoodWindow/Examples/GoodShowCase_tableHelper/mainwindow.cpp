@@ -37,6 +37,7 @@ SOFTWARE.
 
 #include "mainwindow.h"
 #include <QSerialPortInfo>
+#include<string>
 
 static const char blankString[] = QT_TRANSLATE_NOOP("SettingsDialog", "N/A");
 
@@ -341,5 +342,23 @@ void MainWindow::readData()
 void CentralWidget::on_btn_clrReceive_clicked()
 {
     ui->textBrowser_receive->clear();
+}
+
+void CentralWidget::on_chk_data1_stateChanged(int arg1)
+{
+    if(ui->chk_data1->isChecked())
+    {
+        QByteArray data_raw,data_send;
+        data_raw.resize(3);
+        data_raw[0]=2;//uint8
+        data_raw[1]=1;
+//        data_raw[2]=0;//len_h
+//        data_raw[3]=1;//len_l
+        data_raw[2]=ui->sb_data1->value();//value
+        data_send=msg_handler.pack_Set(data_raw);
+        m_serial->write(data_send);
+        ui->lineEdit_send->clear();
+        ui->lineEdit_send->setText(data_send.toHex(' ').toUpper());
+    }
 }
 

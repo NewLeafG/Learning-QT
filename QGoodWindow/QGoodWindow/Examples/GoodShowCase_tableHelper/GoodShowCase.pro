@@ -41,3 +41,5 @@ HEADERS += \
 
 FORMS += \
     centralwidget.ui
+
+RC_ICONS=kj_logo.ico

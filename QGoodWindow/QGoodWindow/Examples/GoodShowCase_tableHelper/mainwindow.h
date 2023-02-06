@@ -33,6 +33,7 @@ SOFTWARE.
 
 #include "ui_centralwidget.h"
 #include <QSerialPort>
+#include "msg_processer.h"
 
 class CentralWidget : public QMainWindow
 {
@@ -52,6 +53,7 @@ void fillPortsInfo();
 void fillPortsParameters();
 
 QSerialPort *m_serial = nullptr;
+msg_processer msg_handler;
 
     Ui::CentralWidget *ui;
 private slots:
@@ -61,6 +63,7 @@ private slots:
     void on_btn_connect_clicked();
     void on_btn_send_clicked();
     void on_btn_clrReceive_clicked();
+    void on_chk_data1_stateChanged(int arg1);
 };
 
 class MainWindow : public QGoodWindow

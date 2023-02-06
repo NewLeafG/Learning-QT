@@ -252,10 +252,10 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_4"/>
+             <widget class="QSpinBox" name="sb_data1"/>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_4">
+             <widget class="QCheckBox" name="chk_data1">
               <property name="text">
                <string/>
               </property>
