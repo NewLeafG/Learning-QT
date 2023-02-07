@@ -43,3 +43,6 @@ FORMS += \
     centralwidget.ui
 
 RC_ICONS=kj_logo.ico
+
+RESOURCES += \
+    images.qrc

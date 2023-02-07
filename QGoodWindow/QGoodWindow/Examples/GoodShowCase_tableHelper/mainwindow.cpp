@@ -144,6 +144,7 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
     m_central_widget->fillPortsParameters();
     m_central_widget->m_serial=new QSerialPort(this);
     connect(m_central_widget->m_serial, &QSerialPort::readyRead, this, &MainWindow::readData);
+    this->setWindowIcon(QIcon(":/img/kj_logo.png"));
 
 }
 
