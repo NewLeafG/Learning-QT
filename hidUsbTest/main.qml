@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import an.qt.ColorMaker 1.0
 import QtQuick.Controls 2.15
+import an.qt.KjUsb 1.0
 
 Window {
     width: 640
@@ -126,6 +127,68 @@ Window {
              }
          }
 
+         Connections {
+             target: m_kjUsb;
+             onMsgReceived:{
+                 colorRect.color = color;
+             }
+         }
+
     }
+
+    Rectangle{
+        id:rectUsb
+        color: "green"
+        anchors.fill: parent
+        opacity: 0.5
+
+        KjUsb{
+            id:m_kjUsb
+        }
+
+        Text{
+            id:t_test;
+            anchors.left:parent.left;
+            anchors.leftMargin: 40;
+            anchors.top:parent.top;
+            anchors.topMargin: 40;
+            font.pixelSize: 26;
+        }
+
+        Button {
+             id: pushButton_detectusb;
+             text: "quit";
+             anchors.top: parent.top;
+             anchors.topMargin: 40;
+             anchors.right: parent.right;
+             onClicked: {
+                 var stringList=m_kjUsb.on_pushButton_detectusb_clicked().split(',');
+
+                 var num=stringList.length;
+                for(var i=0;i<num;i++)
+                {
+                    console.log("stringList", i, stringList[i]);
+                    var data=stringList[i];
+                    cb_devices.append(data);
+                }
+             }
+         }
+
+        ComboBox {
+            editable: true
+            model: ListModel {
+                id: cb_devices
+                ListElement { text: "Banana" }
+            }
+        }
+
+        Connections {
+            target: m_kjUsb;
+            onMsgReceived:{
+                colorRect.color = color;
+            }
+        }
+
+   }
 
 }

@@ -6,6 +6,7 @@ QT += quick
 
 SOURCES += \
         colormaker.cpp \
+        kj_usb.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -22,4 +23,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    colormaker.h
+    colormaker.h \
+    hidapi-win/include/hidapi.h \
+    kj_usb.h
+
+win32: LIBS += -L$$PWD/hidapi-win/x64/ -lhidapi
+
+INCLUDEPATH += $$PWD/hidapi-win/include
+DEPENDPATH += $$PWD/hidapi-win/include

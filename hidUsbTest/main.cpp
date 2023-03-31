@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "colormaker.h"
+#include "kj_usb.h"
 
 
 int main(int argc, char *argv[])
@@ -10,6 +11,7 @@ int main(int argc, char *argv[])
 #endif
     QGuiApplication app(argc, argv);
     qmlRegisterType<ColorMaker>("an.qt.ColorMaker",1,0,"ColorMaker");
+    qmlRegisterType<KjUsb>("an.qt.KjUsb",1,0,"KjUsb");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
