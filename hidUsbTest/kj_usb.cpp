@@ -86,6 +86,7 @@ bool KjUsb::on_pushButton_usblock_clicked(QString dev,bool cmd)
 //            ui->comboBox_usbhid->setEnabled(false);
 //            //以下控件使能
 //            ui->pushButton_HIDSend->setEnabled(true);
+            rst=true;
         }else
         {
             qDebug("打开vid=0x%04x,pid=0x%04x 的usbhid设备失败！", this->vendor_id, this->product_id);
@@ -115,6 +116,7 @@ bool KjUsb::on_pushButton_usblock_clicked(QString dev,bool cmd)
 //        ui->comboBox_usbhid->setEnabled(true);
 //        //以下控件失效
 //        ui->pushButton_HIDSend->setEnabled(false);
+        rst=true;
     }
     return rst;
 }

@@ -16,7 +16,7 @@ public:
 
     Q_INVOKABLE QString on_pushButton_detectusb_clicked();
 
-    bool on_pushButton_usblock_clicked(QString dev,bool cmd);
+    Q_INVOKABLE bool on_pushButton_usblock_clicked(QString dev,bool cmd);
 
     void on_comboBox_usbhid_currentTextChanged();
 

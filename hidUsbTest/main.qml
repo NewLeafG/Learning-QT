@@ -157,7 +157,7 @@ Window {
 
         Button {
              id: pushButton_detectusb;
-             text: "quit";
+             text: "检测设备";
              anchors.top: parent.top;
              anchors.topMargin: 40;
              anchors.right: parent.right;
@@ -165,22 +165,60 @@ Window {
                  var stringList=m_kjUsb.on_pushButton_detectusb_clicked().split(',');
 
                  var num=stringList.length;
+                 num-=1;
                 for(var i=0;i<num;i++)
                 {
                     console.log("stringList", i, stringList[i]);
-                    var data=stringList[i];
-                    cb_devices.append(data);
+//                    stringList[i]=(i.toString()+'.'+stringList[i]);
+                    listDevices.append({text:stringList[i]});
+                }
+                if(num>0)
+                {
+                    cb_devices.currentIndex=0;
                 }
              }
          }
 
         ComboBox {
+            id: cb_devices
             editable: true
+            anchors.top: pushButton_detectusb.bottom;
+            anchors.topMargin: 4;
+            anchors.right: parent.right;
             model: ListModel {
-                id: cb_devices
-                ListElement { text: "Banana" }
+                id: listDevices
             }
         }
+
+        Button {
+             id: pushButton_usblock;
+             text: "连接设备";
+             anchors.top: cb_devices.bottom;
+             anchors.topMargin: 4;
+             anchors.right: parent.right;
+             onClicked: {
+                 var ret;
+
+                     if(pushButton_usblock.text==="连接设备")
+                     {
+                         ret=m_kjUsb.on_pushButton_usblock_clicked(cb_devices.currentText,true);
+                         if(ret===true)
+                         {
+
+                         pushButton_usblock.text="断开连接";
+                         }
+                     }
+                     else if(pushButton_usblock.text==="断开连接")
+                     {
+                         ret=m_kjUsb.on_pushButton_usblock_clicked(cb_devices.currentText,false);
+                         if(ret===true)
+                         {
+                         pushButton_usblock.text="连接设备";
+                         }
+                     }
+
+             }
+         }
 
         Connections {
             target: m_kjUsb;
