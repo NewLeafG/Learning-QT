@@ -7,6 +7,9 @@
 class KjUsb : public QObject
 {
     Q_OBJECT
+
+//    Q_PROPERTY(QString recMsg READ sendMsg WRITE setRecMsg NOTIFY msgReceived)
+
 public:
     explicit KjUsb(QObject *parent = nullptr);
 
@@ -26,10 +29,10 @@ public:
 
     void on_checkBox_HexSend_clicked();
 
-    void on_pushButton_HIDSend_clicked(bool hex,QString sendMsg);
+    Q_INVOKABLE void on_pushButton_HIDSend_clicked(bool hex,QString sendMsg);
 
 signals:
-     void msgReceived(QString msg);
+     void msgReceived(QString msgRec);
 
 private slots:
 
