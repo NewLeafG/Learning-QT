@@ -20,7 +20,7 @@
 #OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 #SOFTWARE.
 
-QT += core gui widgets
+QT += core gui widgets serialport
 
 CONFIG += c++11
 
@@ -32,10 +32,17 @@ include($$PWD/../../QGoodCentralWidget/QGoodCentralWidget.pri)
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    msg_processer.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    msg_processer.h
 
 FORMS += \
     centralwidget.ui
+
+RC_ICONS=kj_logo.ico
+
+RESOURCES += \
+    images.qrc
