@@ -100,7 +100,7 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
     //     m_good_central_widget->setActiveBorderColor(!m_good_central_widget->isTitleVisible() ? Qt::red : QColor());
     // });
 
-    QLabel *label = new QLabel("科嘉电器", widget);
+    QLabel *label = new QLabel("升降桌助手", widget);
     label->setAttribute(Qt::WA_TransparentForMouseEvents);
 
 //    layout->addWidget(button);
