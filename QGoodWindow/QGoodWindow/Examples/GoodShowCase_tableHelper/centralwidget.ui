@@ -190,6 +190,9 @@
            <height>91</height>
           </rect>
          </property>
+         <property name="lineWrapMode">
+          <enum>QTextEdit::NoWrap</enum>
+         </property>
         </widget>
        </widget>
       </item>

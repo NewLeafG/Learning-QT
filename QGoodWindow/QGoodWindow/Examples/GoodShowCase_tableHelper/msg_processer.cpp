@@ -58,7 +58,7 @@ msgData msg_processer::msg_parser(QByteArray msg)
 
 
     m_readBuffer.push_back(msg);
-    if (0xa5 == m_readBuffer[0])
+    if (0xa5 == (uchar)m_readBuffer[0])
     {
         if ((rx_num >= (m_readBuffer[5] + 6)) && (rx_num > 5)) // 协议规定length数据有两个字节，现只取低位，也就是长度不能超过255
         {
@@ -79,7 +79,7 @@ msgData msg_processer::msg_parser(QByteArray msg)
     else
     {
         rx_num = 0;
-        m_readBuffer[0] = 0;
+        m_readBuffer.clear();
     }
 
     if (rx_f & 1)

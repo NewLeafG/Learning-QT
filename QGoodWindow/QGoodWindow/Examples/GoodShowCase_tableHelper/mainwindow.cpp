@@ -337,8 +337,14 @@ void MainWindow::readData()
 //    QString data(dataBA);
 
 //    m_central_widget->ui->textBrowser_receive->append(data);
-    m_central_widget->ui->textBrowser_receive->append(dataBA.toHex(' ').toUpper());
-    m_central_widget->msg_handler.msg_parser(dataBA);
+//    m_central_widget->ui->textBrowser_receive->append(dataBA.toHex(' ').toUpper());//append接口会自动换行
+    m_central_widget->ui->textBrowser_receive->insertPlainText(dataBA.toHex(' ').toUpper());
+    msgData ret = m_central_widget->msg_handler.msg_parser(dataBA);
+    if(ret.cmd>0)
+    {
+        m_central_widget->ui->textBrowser_receive->append(QTime::currentTime().toString("hh:mm:ss"));
+        m_central_widget->ui->textBrowser_receive->append("成功发送命令："+QString::number(ret.cmd));
+    }
 }
 
 void CentralWidget::on_btn_clrReceive_clicked()
