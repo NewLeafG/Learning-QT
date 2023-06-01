@@ -22,6 +22,10 @@ public:
     QByteArray pack_Set(QByteArray value); //串口发送数据长度注意不要过长
     msgData msg_parser(QByteArray msg);
 
+private:
+    QByteArray m_readBuffer={0};
+    uchar rx_num=0;
+    uchar rx_f=0;
 };
 
 #endif // MSG_PROCESSER_H

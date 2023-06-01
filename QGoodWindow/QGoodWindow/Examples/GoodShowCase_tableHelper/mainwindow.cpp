@@ -244,8 +244,8 @@ void CentralWidget::fillPortsInfo()
 
 void CentralWidget::fillPortsParameters()
 {
-    ui->cb_baudrate->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
     ui->cb_baudrate->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
+    ui->cb_baudrate->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
     ui->cb_baudrate->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
     ui->cb_baudrate->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
     ui->cb_baudrate->addItem(tr("Custom"));
@@ -338,6 +338,7 @@ void MainWindow::readData()
 
 //    m_central_widget->ui->textBrowser_receive->append(data);
     m_central_widget->ui->textBrowser_receive->append(dataBA.toHex(' ').toUpper());
+    m_central_widget->msg_handler.msg_parser(dataBA);
 }
 
 void CentralWidget::on_btn_clrReceive_clicked()
@@ -361,5 +362,95 @@ void CentralWidget::on_chk_data1_stateChanged(int arg1)
         ui->lineEdit_send->clear();
         ui->lineEdit_send->setText(data_send.toHex(' ').toUpper());
     }
+}
+
+void CentralWidget::on_chk_data2_stateChanged(int arg1)
+{
+    if(ui->chk_data2->isChecked())
+    {
+        QByteArray data_raw,data_send;
+        data_raw.resize(3);
+        data_raw[0]=2;//uint8
+        data_raw[1]=2;//attrid
+        data_raw[2]=ui->sb_data2->value();//value
+        data_send=msg_handler.pack_Set(data_raw);
+        m_serial->write(data_send);
+        ui->lineEdit_send->clear();
+        ui->lineEdit_send->setText(data_send.toHex(' ').toUpper());
+    }
+}
+
+void CentralWidget::on_btn_writeAll_clicked()
+{
+    QByteArray data_raw,data_send;
+    data_raw.resize(39);
+    data_raw[0]=2;//typeid
+    data_raw[1]=1;//attrid
+    data_raw[2]=ui->sb_data1->value();//value
+    data_raw[3]=2;//typeid
+    data_raw[4]=2;//attrid
+    data_raw[5]=ui->sb_data2->value();//value
+    data_raw[6]=2;//typeid
+    data_raw[7]=3;//attrid
+    data_raw[8]=ui->sb_data3->value();//value
+    data_raw[9]=2;//typeid
+    data_raw[10]=4;//attrid
+    data_raw[11]=ui->sb_data4->value();//value
+    data_raw[12]=2;//typeid
+    data_raw[13]=5;//attrid
+    data_raw[14]=ui->sb_data5->value();//value
+    data_raw[15]=2;//typeid
+    data_raw[16]=6;//attrid
+    data_raw[17]=ui->sb_data6->value();//value
+    data_raw[18]=2;//typeid
+    data_raw[19]=7;//attrid
+    data_raw[20]=ui->sb_data7->value();//value
+    data_raw[21]=2;//typeid
+    data_raw[22]=8;//attrid
+    data_raw[23]=ui->sb_data8->value();//value
+    data_raw[24]=2;//typeid
+    data_raw[25]=9;//attrid
+    data_raw[26]=ui->sb_data9->value();//value
+    data_raw[27]=2;//typeid
+    data_raw[28]=10;//attrid
+    data_raw[29]=ui->sb_data10->value();//value
+    data_raw[30]=2;//typeid
+    data_raw[31]=11;//attrid
+    data_raw[32]=ui->sb_data11->value();//value
+    data_raw[33]=2;//typeid
+    data_raw[34]=12;//attrid
+    data_raw[35]=ui->sb_data12->value();//value
+    data_raw[36]=2;//typeid
+    data_raw[37]=13;//attrid
+    data_raw[38]=ui->sb_data13->value();//value
+    data_send=msg_handler.pack_Set(data_raw);
+    m_serial->write(data_send);
+    ui->lineEdit_send->clear();
+    ui->lineEdit_send->setText(data_send.toHex(' ').toUpper());
+
+}
+
+void CentralWidget::on_btn_readAll_clicked()
+{
+    QByteArray data_raw,data_send;
+    data_raw.resize(13);//attrId
+    data_raw[0]=1;
+    data_raw[1]=2;
+    data_raw[2]=3;
+    data_raw[3]=4;
+    data_raw[4]=5;
+    data_raw[5]=6;
+    data_raw[6]=7;
+    data_raw[7]=8;
+    data_raw[8]=9;
+    data_raw[9]=10;
+    data_raw[10]=11;
+    data_raw[11]=12;
+    data_raw[12]=13;
+    data_send=msg_handler.pack_Get(data_raw);
+    m_serial->write(data_send);
+    ui->lineEdit_send->clear();
+    ui->lineEdit_send->setText(data_send.toHex(' ').toUpper());
+
 }
 

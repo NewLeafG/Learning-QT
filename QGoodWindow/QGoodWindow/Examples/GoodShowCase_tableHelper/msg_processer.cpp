@@ -13,12 +13,12 @@ QByteArray msg_processer::pack_Get(QByteArray attrid)
     ret.push_back(0x03);
     ret.push_back(0x03);//GET
     ret.push_back(0x00);//LEN_H
-    ret.push_back(attrid.size());//LEN_L
+    ret.push_back(attrid.size()+1);//LEN_L
     ret.push_back(0x00);//msg_id
     for (int i = 0; i < attrid.size(); i++) {
         ret.push_back(attrid[i]);
     }
-    uint8_t sum=0xa5;
+    uint8_t sum=0;
     for (unsigned long long i = 0; i < ret.size(); ++i) {
         sum+=ret[i];
     }
@@ -56,14 +56,43 @@ msgData msg_processer::msg_parser(QByteArray msg)
     msgData ret;
     ret.cmd=-1;
 
-    uint8_t sum=0x00;
-    for (int i = 0; i < msg.size(); i++) {
-        sum+=msg[i];
-    }
-    if(sum==msg[msg.size()-1])
-    {
-        ret.cmd=msg[3];
 
+    m_readBuffer.push_back(msg);
+    if (0xa5 == m_readBuffer[0])
+    {
+        if ((rx_num >= (m_readBuffer[5] + 6)) && (rx_num > 5)) // 协议规定length数据有两个字节，现只取低位，也就是长度不能超过255
+        {
+            rx_num = 0;
+            rx_f |= 1;
+        }
+        else
+            rx_num++;
+
+        if (((rx_num > 1) && (m_readBuffer[1] != 0xa5)) || (m_readBuffer[5] > 200))
+        {
+            rx_num = 0; // rec err
+            m_readBuffer[0] = 0;
+            m_readBuffer[1] = 0;
+            m_readBuffer[5] = 0;
+        }
+    }
+    else
+    {
+        rx_num = 0;
+        m_readBuffer[0] = 0;
+    }
+
+    if (rx_f & 1)
+    {
+        uint8_t sum = 0x00;
+        for (int i = 0; i < rx_num; i++)
+        {
+            sum += m_readBuffer[i];
+        }
+        if (sum == m_readBuffer[rx_num - 1])
+        {
+            ret.cmd = m_readBuffer[3];
+        }
     }
 
     return ret;

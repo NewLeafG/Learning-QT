@@ -64,6 +64,9 @@ private slots:
     void on_btn_send_clicked();
     void on_btn_clrReceive_clicked();
     void on_chk_data1_stateChanged(int arg1);
+    void on_chk_data2_stateChanged(int arg1);
+    void on_btn_writeAll_clicked();
+    void on_btn_readAll_clicked();
 };
 
 class MainWindow : public QGoodWindow

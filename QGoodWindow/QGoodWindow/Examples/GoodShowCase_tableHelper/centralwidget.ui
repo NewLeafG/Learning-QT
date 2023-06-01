@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>983</width>
-    <height>793</height>
+    <width>1022</width>
+    <height>890</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -276,10 +276,10 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_5"/>
+             <widget class="QSpinBox" name="sb_data2"/>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_5">
+             <widget class="QCheckBox" name="chk_data2">
               <property name="text">
                <string/>
               </property>
@@ -300,7 +300,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_6"/>
+             <widget class="QSpinBox" name="sb_data3"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_6">
@@ -324,7 +324,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_7"/>
+             <widget class="QSpinBox" name="sb_data4"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_7">
@@ -348,7 +348,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_8"/>
+             <widget class="QSpinBox" name="sb_data5"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_8">
@@ -372,7 +372,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_9"/>
+             <widget class="QSpinBox" name="sb_data6"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_9">
@@ -396,7 +396,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_10"/>
+             <widget class="QSpinBox" name="sb_data7"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_10">
@@ -420,7 +420,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_11"/>
+             <widget class="QSpinBox" name="sb_data8"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_11">
@@ -444,7 +444,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_12"/>
+             <widget class="QSpinBox" name="sb_data9"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_12">
@@ -468,7 +468,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_13"/>
+             <widget class="QSpinBox" name="sb_data10"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_13">
@@ -492,7 +492,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_14"/>
+             <widget class="QSpinBox" name="sb_data11"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_14">
@@ -516,7 +516,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_15"/>
+             <widget class="QSpinBox" name="sb_data12"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_15">
@@ -540,7 +540,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_16"/>
+             <widget class="QSpinBox" name="sb_data13"/>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_16">
@@ -601,6 +601,32 @@
           </item>
          </layout>
         </widget>
+        <widget class="QPushButton" name="btn_readAll">
+         <property name="geometry">
+          <rect>
+           <x>40</x>
+           <y>750</y>
+           <width>140</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>读取所有</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_writeAll">
+         <property name="geometry">
+          <rect>
+           <x>320</x>
+           <y>750</y>
+           <width>140</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>写入所有</string>
+         </property>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -612,7 +638,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>983</width>
+     <width>1022</width>
      <height>22</height>
     </rect>
    </property>
