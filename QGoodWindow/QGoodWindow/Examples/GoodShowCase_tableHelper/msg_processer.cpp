@@ -56,43 +56,47 @@ msgData msg_processer::msg_parser(QByteArray msg)
     msgData ret;
     ret.cmd=-1;
 
-
-    m_readBuffer.push_back(msg);
-    if (0xa5 == (uchar)m_readBuffer[0])
+    for(int i=0;i<msg.size();i++)
     {
-        if ((rx_num >= (m_readBuffer[5] + 6)) && (rx_num > 5)) // 协议规定length数据有两个字节，现只取低位，也就是长度不能超过255
+        m_readBuffer.push_back(msg[i]);
+        if (0xa5 == m_readBuffer[0])
         {
-            rx_num = 0;
-            rx_f |= 1;
+            if ((rx_num >= (m_readBuffer[5] + 6)) && (rx_num > 5)) // 协议规定length数据有两个字节，现只取低位，也就是长度不能超过255
+            {
+                rx_f |= 1;
+            }
+            else
+                rx_num++;
+
+            if (((rx_num > 1) && (m_readBuffer[1] != 0xa5)) || ((rx_num > 5) &&(m_readBuffer[5] > 200)) )
+            {
+                rx_num = 0; // rec err
+                m_readBuffer[0] = 0;
+                m_readBuffer[1] = 0;
+                m_readBuffer[5] = 0;
+            }
         }
         else
-            rx_num++;
-
-        if (((rx_num > 1) && (m_readBuffer[1] != 0xa5)) || (m_readBuffer[5] > 200))
         {
-            rx_num = 0; // rec err
-            m_readBuffer[0] = 0;
-            m_readBuffer[1] = 0;
-            m_readBuffer[5] = 0;
+            rx_num = 0;
+            m_readBuffer.clear();
         }
-    }
-    else
-    {
-        rx_num = 0;
-        m_readBuffer.clear();
     }
 
     if (rx_f & 1)
     {
+        rx_f=0;
         uint8_t sum = 0x00;
         for (int i = 0; i < rx_num; i++)
         {
             sum += m_readBuffer[i];
         }
-        if (sum == m_readBuffer[rx_num - 1])
+        if (sum == m_readBuffer[rx_num])
         {
             ret.cmd = m_readBuffer[3];
         }
+        rx_num = 0;
+        m_readBuffer.clear();
     }
 
     return ret;

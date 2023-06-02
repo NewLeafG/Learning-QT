@@ -23,7 +23,7 @@ public:
     msgData msg_parser(QByteArray msg);
 
 private:
-    QByteArray m_readBuffer={0};
+    vector<uint8_t> m_readBuffer;
     uchar rx_num=0;
     uchar rx_f=0;
 };

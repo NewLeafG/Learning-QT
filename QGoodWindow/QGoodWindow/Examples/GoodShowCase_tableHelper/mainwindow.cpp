@@ -329,6 +329,8 @@ void CentralWidget::on_btn_send_clicked()
                 qbyte.append((char)s.toInt(0,16)&0xFF);
         }
     m_serial->write(qbyte);
+    b_send_clicked=1;
+
 }
 
 void MainWindow::readData()
@@ -342,8 +344,12 @@ void MainWindow::readData()
     msgData ret = m_central_widget->msg_handler.msg_parser(dataBA);
     if(ret.cmd>0)
     {
-        m_central_widget->ui->textBrowser_receive->append(QTime::currentTime().toString("hh:mm:ss"));
-        m_central_widget->ui->textBrowser_receive->append("成功发送命令："+QString::number(ret.cmd));
+        m_central_widget->ui->textBrowser_receive->append(QTime::currentTime().toString("hh:mm:ss")+": 成功发送指令："+QString::number(ret.cmd)+"\r\n");
+    }
+    else if(m_central_widget->b_send_clicked)
+    {
+        m_central_widget->b_send_clicked=0;
+        m_central_widget->ui->textBrowser_receive->append("\r\n");//换行
     }
 }
 

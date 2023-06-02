@@ -54,6 +54,7 @@ void fillPortsParameters();
 
 QSerialPort *m_serial = nullptr;
 msg_processer msg_handler;
+bool b_send_clicked=0;
 
     Ui::CentralWidget *ui;
 private slots:
@@ -67,6 +68,7 @@ private slots:
     void on_chk_data2_stateChanged(int arg1);
     void on_btn_writeAll_clicked();
     void on_btn_readAll_clicked();
+
 };
 
 class MainWindow : public QGoodWindow
