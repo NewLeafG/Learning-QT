@@ -231,12 +231,19 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_3"/>
+             <widget class="QSpinBox" name="spinBox_3">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_3">
               <property name="text">
                <string/>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -255,12 +262,19 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data1"/>
+             <widget class="QSpinBox" name="sb_data1">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="chk_data1">
               <property name="text">
                <string/>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
               </property>
              </widget>
             </item>
@@ -279,7 +293,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data2"/>
+             <widget class="QSpinBox" name="sb_data2">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="chk_data2">
@@ -303,10 +321,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data3"/>
+             <widget class="QSpinBox" name="sb_data3">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_6">
+             <widget class="QCheckBox" name="chk_data3">
               <property name="text">
                <string/>
               </property>
@@ -327,10 +349,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data4"/>
+             <widget class="QSpinBox" name="sb_data4">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_7">
+             <widget class="QCheckBox" name="chk_data4">
               <property name="text">
                <string/>
               </property>
@@ -351,10 +377,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data5"/>
+             <widget class="QSpinBox" name="sb_data5">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_8">
+             <widget class="QCheckBox" name="chk_data5">
               <property name="text">
                <string/>
               </property>
@@ -375,10 +405,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data6"/>
+             <widget class="QSpinBox" name="sb_data6">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_9">
+             <widget class="QCheckBox" name="chk_data6">
               <property name="text">
                <string/>
               </property>
@@ -399,10 +433,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data7"/>
+             <widget class="QSpinBox" name="sb_data7">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_10">
+             <widget class="QCheckBox" name="chk_data7">
               <property name="text">
                <string/>
               </property>
@@ -423,10 +461,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data8"/>
+             <widget class="QSpinBox" name="sb_data8">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_11">
+             <widget class="QCheckBox" name="chk_data8">
               <property name="text">
                <string/>
               </property>
@@ -447,10 +489,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data9"/>
+             <widget class="QSpinBox" name="sb_data9">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_12">
+             <widget class="QCheckBox" name="chk_data9">
               <property name="text">
                <string/>
               </property>
@@ -471,10 +517,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data10"/>
+             <widget class="QSpinBox" name="sb_data10">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_13">
+             <widget class="QCheckBox" name="chk_data10">
               <property name="text">
                <string/>
               </property>
@@ -495,10 +545,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data11"/>
+             <widget class="QSpinBox" name="sb_data11">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_14">
+             <widget class="QCheckBox" name="chk_data11">
               <property name="text">
                <string/>
               </property>
@@ -519,10 +573,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data12"/>
+             <widget class="QSpinBox" name="sb_data12">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_15">
+             <widget class="QCheckBox" name="chk_data12">
               <property name="text">
                <string/>
               </property>
@@ -543,10 +601,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="sb_data13"/>
+             <widget class="QSpinBox" name="sb_data13">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBox_16">
+             <widget class="QCheckBox" name="chk_data13">
               <property name="text">
                <string/>
               </property>
@@ -567,12 +629,19 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox"/>
+             <widget class="QSpinBox" name="spinBox">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox">
               <property name="text">
                <string/>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -591,12 +660,19 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox_2"/>
+             <widget class="QSpinBox" name="spinBox_2">
+              <property name="maximum">
+               <number>255</number>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QCheckBox" name="checkBox_2">
               <property name="text">
                <string/>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -628,6 +704,19 @@
          </property>
          <property name="text">
           <string>写入所有</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="btn_clrAll">
+         <property name="geometry">
+          <rect>
+           <x>180</x>
+           <y>750</y>
+           <width>140</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>清除所有</string>
          </property>
         </widget>
        </widget>

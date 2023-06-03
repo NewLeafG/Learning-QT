@@ -42,6 +42,33 @@ public:
     explicit CentralWidget(QWidget *parent = nullptr) : QMainWindow(parent), ui(new Ui::CentralWidget)
     {
         ui->setupUi(this);
+        connect(ui->chk_data1,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data2,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data3,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data4,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data5,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data6,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data7,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data8,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data9,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data10,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data11,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data12,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data13,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+
+        connect(ui->sb_data1,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data2,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data3,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data4,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data5,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data6,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data7,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data8,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data9,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data10,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data11,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data12,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data13,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
     }
 
     ~CentralWidget()
@@ -49,14 +76,15 @@ public:
         delete ui;
     }
 
-void fillPortsInfo();
-void fillPortsParameters();
+    void fillPortsInfo();
+    void fillPortsParameters();
 
-QSerialPort *m_serial = nullptr;
-msg_processer msg_handler;
-bool b_send_clicked=0;
-
+    QSerialPort *m_serial = nullptr;
+    msg_processer msg_handler;
+    bool b_send_clicked=0;
     Ui::CentralWidget *ui;
+    QObject* m_cmd_sender;
+
 private slots:
     void on_cb_serialPorts_activated(int index);
 
@@ -64,11 +92,12 @@ private slots:
     void on_btn_connect_clicked();
     void on_btn_send_clicked();
     void on_btn_clrReceive_clicked();
-    void on_chk_data1_stateChanged(int arg1);
-    void on_chk_data2_stateChanged(int arg1);
     void on_btn_writeAll_clicked();
     void on_btn_readAll_clicked();
 
+    void on_chk_data_clicked();
+    void on_sb_data_valueChanged(int arg1);
+    void on_btn_clrAll_clicked();
 };
 
 class MainWindow : public QGoodWindow

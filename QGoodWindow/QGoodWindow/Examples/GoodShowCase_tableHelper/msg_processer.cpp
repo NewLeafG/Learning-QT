@@ -94,6 +94,13 @@ msgData msg_processer::msg_parser(QByteArray msg)
         if (sum == m_readBuffer[rx_num])
         {
             ret.cmd = m_readBuffer[3];
+            if((0x03==ret.cmd)||(0x10==ret.cmd))
+            {
+                for(int i=0;i<m_readBuffer[5]-1;i++)
+                {
+                    ret.data.push_back(m_readBuffer[7+i]);
+                }
+            }
         }
         rx_num = 0;
         m_readBuffer.clear();

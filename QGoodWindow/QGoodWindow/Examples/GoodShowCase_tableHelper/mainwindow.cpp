@@ -345,6 +345,51 @@ void MainWindow::readData()
     if(ret.cmd>0)
     {
         m_central_widget->ui->textBrowser_receive->append(QTime::currentTime().toString("hh:mm:ss")+": 成功发送指令："+QString::number(ret.cmd)+"\r\n");
+        QList<QCheckBox*> cbList = this->findChildren<QCheckBox*>();
+        switch (ret.cmd)
+        {
+        case 0x01://SET
+            if("btn_writeAll"==m_central_widget->m_cmd_sender->objectName())
+            {
+                for(int i=0;i<cbList.count();i++)
+                {
+                    cbList[i]->setChecked(true);
+                }
+            }
+            else
+            {
+                QCheckBox* cb = qobject_cast<QCheckBox*>(m_central_widget->m_cmd_sender);//获取发射信号的对象
+                cb->setChecked(true);
+            }
+            break;
+
+        case 0x03://GET
+            for(uint i=0;i<ret.data.size();)
+            {
+                if(2==ret.data[i])
+                {
+                    QList<QSpinBox *> sb = this->findChildren<QSpinBox *> ("sb_data"+QString::number(ret.data[i+1]));
+                    if(sb.count()>0)
+                    {
+                        sb[0]->setValue(ret.data[i+2]);
+                    }
+                    QList<QCheckBox *> cb = this->findChildren<QCheckBox *> ("chk_data"+QString::number(ret.data[i+1]));
+                    if(cb.count()>0)
+                    {
+                        cb[0]->setChecked(true);
+                    }
+                    i+=3;
+                }
+                else
+                {
+                    i=255;
+                }
+            }
+            break;
+
+        default:
+            break;
+        }
     }
     else if(m_central_widget->b_send_clicked)
     {
@@ -358,42 +403,10 @@ void CentralWidget::on_btn_clrReceive_clicked()
     ui->textBrowser_receive->clear();
 }
 
-void CentralWidget::on_chk_data1_stateChanged(int arg1)
-{
-    if(ui->chk_data1->isChecked())
-    {
-        QByteArray data_raw,data_send;
-        data_raw.resize(3);
-        data_raw[0]=2;//uint8
-        data_raw[1]=1;
-//        data_raw[2]=0;//len_h
-//        data_raw[3]=1;//len_l
-        data_raw[2]=ui->sb_data1->value();//value
-        data_send=msg_handler.pack_Set(data_raw);
-        m_serial->write(data_send);
-        ui->lineEdit_send->clear();
-        ui->lineEdit_send->setText(data_send.toHex(' ').toUpper());
-    }
-}
-
-void CentralWidget::on_chk_data2_stateChanged(int arg1)
-{
-    if(ui->chk_data2->isChecked())
-    {
-        QByteArray data_raw,data_send;
-        data_raw.resize(3);
-        data_raw[0]=2;//uint8
-        data_raw[1]=2;//attrid
-        data_raw[2]=ui->sb_data2->value();//value
-        data_send=msg_handler.pack_Set(data_raw);
-        m_serial->write(data_send);
-        ui->lineEdit_send->clear();
-        ui->lineEdit_send->setText(data_send.toHex(' ').toUpper());
-    }
-}
-
 void CentralWidget::on_btn_writeAll_clicked()
 {
+    m_cmd_sender = sender();//获取发射信号的对象
+
     QByteArray data_raw,data_send;
     data_raw.resize(39);
     data_raw[0]=2;//typeid
@@ -463,6 +476,62 @@ void CentralWidget::on_btn_readAll_clicked()
     m_serial->write(data_send);
     ui->lineEdit_send->clear();
     ui->lineEdit_send->setText(data_send.toHex(' ').toUpper());
+
+}
+
+
+void CentralWidget::on_chk_data_clicked()
+{
+    QCheckBox* cb = qobject_cast<QCheckBox*>(sender());//获取发射信号的对象
+    cb->setChecked(false);
+    m_cmd_sender = sender();//获取发射信号的对象
+    QString name=m_cmd_sender->objectName();
+    name.remove(0,8);
+    bool ok = false;
+    uchar id=name.toUInt(&ok);
+    QList<QSpinBox *> widgets = this->findChildren<QSpinBox *> ("sb_data"+name);
+
+    if(ok&&(widgets.count()>0))
+    {
+        QByteArray data_raw,data_send;
+        data_raw.resize(3);
+        data_raw[0]=2;//uint8
+        data_raw[1]=id;//attrid
+        data_raw[2]=widgets[0]->value();//value
+        data_send=msg_handler.pack_Set(data_raw);
+        m_serial->write(data_send);
+        ui->lineEdit_send->clear();
+        ui->lineEdit_send->setText(data_send.toHex(' ').toUpper());
+    }
+
+}
+
+
+void CentralWidget::on_sb_data_valueChanged(int arg1)
+{
+    QString name=sender()->objectName();
+    name.remove(0,7);
+    QList<QCheckBox *> widgets = this->findChildren<QCheckBox *> ("chk_data"+name);
+    if(widgets.count()>0)
+    {
+        widgets[0]->setChecked(false);
+    }
+}
+
+
+void CentralWidget::on_btn_clrAll_clicked()
+{
+    QList<QCheckBox*> cbList = this->findChildren<QCheckBox*>();
+    for(int i=0;i<cbList.count();i++)
+    {
+        cbList[i]->setChecked(false);
+    }
+
+    QList<QSpinBox*> sbList = this->findChildren<QSpinBox*>();
+    for(int i=0;i<sbList.count();i++)
+    {
+        sbList[i]->setValue(0);
+    }
 
 }
 
