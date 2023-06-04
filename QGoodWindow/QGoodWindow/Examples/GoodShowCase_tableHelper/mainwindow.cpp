@@ -286,13 +286,20 @@ void CentralWidget::on_cb_serialPorts_activated(int index)
 
 void CentralWidget::on_btn_connect_clicked()
 {
+    int idx=ui->cb_serialPorts->currentIndex();
+    if(idx<0)
+    {
+        QMessageBox::critical(this, "无可用设备！", m_serial->errorString());
+        return;
+    }
+
     if (m_serial->isOpen())
     {
         m_serial->close();
         ui->btn_connect->setText("连接");
+        m_b_connected=0;
     }
 else{
-    int idx=ui->cb_serialPorts->currentIndex();
     const QStringList list = ui->cb_serialPorts->itemData(idx).toStringList();
 
     m_serial->setPortName(list[0]);
@@ -308,6 +315,7 @@ else{
     m_serial->setFlowControl(flowControlData.value<QSerialPort::FlowControl>());
     if (m_serial->open(QIODevice::ReadWrite)) {
         ui->btn_connect->setText("断开连接");
+        m_b_connected=true;
     } else {
         QMessageBox::critical(this, tr("Error"), m_serial->errorString());
 
@@ -535,3 +543,10 @@ void CentralWidget::on_btn_clrAll_clicked()
 
 }
 
+void CentralWidget::timeout1Hz()
+{
+    if(!m_b_connected)
+    {
+        fillPortsInfo();
+    }
+}

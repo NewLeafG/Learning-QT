@@ -34,6 +34,7 @@ SOFTWARE.
 #include "ui_centralwidget.h"
 #include <QSerialPort>
 #include "msg_processer.h"
+#include <QTimer>
 
 class CentralWidget : public QMainWindow
 {
@@ -69,6 +70,14 @@ public:
         connect(ui->sb_data11,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
         connect(ui->sb_data12,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
         connect(ui->sb_data13,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+
+        connect(timer_1000ms, &QTimer::timeout, this, &CentralWidget::timeout1Hz);
+        timer_1000ms->start(1000);
+
+//        int width_parent = ui->verticalLayout_left->parentWidget()->width();
+//        int height_parent = ui->verticalLayout_left->parentWidget()->height();
+
+//        ui->verticalLayout_left->setGeometry(0,0,width_parent/3,height_parent);
     }
 
     ~CentralWidget()
@@ -84,6 +93,8 @@ public:
     bool b_send_clicked=0;
     Ui::CentralWidget *ui;
     QObject* m_cmd_sender;
+    QTimer *timer_1000ms = new QTimer(this);
+    bool m_b_connected=0;
 
 private slots:
     void on_cb_serialPorts_activated(int index);
@@ -98,6 +109,7 @@ private slots:
     void on_chk_data_clicked();
     void on_sb_data_valueChanged(int arg1);
     void on_btn_clrAll_clicked();
+    void timeout1Hz();
 };
 
 class MainWindow : public QGoodWindow
