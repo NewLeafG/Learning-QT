@@ -217,9 +217,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void CentralWidget::fillPortsInfo()
 {
+    const auto infos = QSerialPortInfo::availablePorts();
+    if(infos.count()==ui->cb_serialPorts->count())
+        return;
+
     ui->cb_serialPorts->clear();
     const QString blankString = tr(::blankString);
-    const auto infos = QSerialPortInfo::availablePorts();
 
     for (const QSerialPortInfo &info : infos) {
         QStringList list;
