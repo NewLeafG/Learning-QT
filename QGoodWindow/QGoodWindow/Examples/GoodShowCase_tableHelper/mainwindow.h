@@ -56,6 +56,8 @@ public:
         connect(ui->chk_data11,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
         connect(ui->chk_data12,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
         connect(ui->chk_data13,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data14,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data15,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
 
         connect(ui->sb_data1,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
         connect(ui->sb_data2,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
@@ -70,6 +72,8 @@ public:
         connect(ui->sb_data11,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
         connect(ui->sb_data12,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
         connect(ui->sb_data13,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data14,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+        connect(ui->sb_data15,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
 
         connect(timer_1000ms, &QTimer::timeout, this, &CentralWidget::timeout1Hz);
         timer_1000ms->start(1000);

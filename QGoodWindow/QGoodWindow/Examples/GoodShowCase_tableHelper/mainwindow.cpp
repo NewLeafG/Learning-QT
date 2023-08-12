@@ -356,6 +356,8 @@ void MainWindow::readData()
     if(ret.cmd>0)
     {
         m_central_widget->ui->textBrowser_receive->append(QTime::currentTime().toString("hh:mm:ss")+": 成功发送指令："+QString::number(ret.cmd)+"\r\n");
+        m_central_widget->ui->lineEdit_version->setText(ret.ver);
+        m_central_widget->ui->cb_version->setChecked(true);
         QList<QCheckBox*> cbList = this->findChildren<QCheckBox*>();
         switch (ret.cmd)
         {
@@ -419,7 +421,7 @@ void CentralWidget::on_btn_writeAll_clicked()
     m_cmd_sender = sender();//获取发射信号的对象
 
     QByteArray data_raw,data_send;
-    data_raw.resize(39);
+    data_raw.resize(45);
     data_raw[0]=2;//typeid
     data_raw[1]=1;//attrid
     data_raw[2]=ui->sb_data1->value();//value
@@ -459,6 +461,12 @@ void CentralWidget::on_btn_writeAll_clicked()
     data_raw[36]=2;//typeid
     data_raw[37]=13;//attrid
     data_raw[38]=ui->sb_data13->value();//value
+    data_raw[36]=2;//typeid
+    data_raw[37]=14;//attrid
+    data_raw[38]=ui->sb_data14->value();//value14
+    data_raw[36]=2;//typeid
+    data_raw[37]=15;//attrid
+    data_raw[38]=ui->sb_data15->value();//value15
     data_send=msg_handler.pack_Set(data_raw);
     m_serial->write(data_send);
     ui->lineEdit_send->clear();
@@ -469,7 +477,7 @@ void CentralWidget::on_btn_writeAll_clicked()
 void CentralWidget::on_btn_readAll_clicked()
 {
     QByteArray data_raw,data_send;
-    data_raw.resize(13);//attrId
+    data_raw.resize(15);//attrId
     data_raw[0]=1;
     data_raw[1]=2;
     data_raw[2]=3;
@@ -483,6 +491,8 @@ void CentralWidget::on_btn_readAll_clicked()
     data_raw[10]=11;
     data_raw[11]=12;
     data_raw[12]=13;
+    data_raw[13]=14;
+    data_raw[14]=15;
     data_send=msg_handler.pack_Get(data_raw);
     m_serial->write(data_send);
     ui->lineEdit_send->clear();
@@ -551,5 +561,28 @@ void CentralWidget::timeout1Hz()
     if(!m_b_connected)
     {
         fillPortsInfo();
+    }
+    else
+    {
+        const auto infos = QSerialPortInfo::availablePorts();
+
+
+        const QString blankString = tr(::blankString);
+
+        bool dev_exist=0;
+        for (const QSerialPortInfo &info : infos) {
+            if(info.portName()==m_serial->portName())
+            {
+                dev_exist=1;
+            }
+        }
+
+        if(!dev_exist)
+        {
+            m_serial->close();
+            ui->btn_connect->setText("连接");
+            m_b_connected=0;
+            QMessageBox::critical(this, "设备已被移除！", m_serial->errorString());
+        }
     }
 }

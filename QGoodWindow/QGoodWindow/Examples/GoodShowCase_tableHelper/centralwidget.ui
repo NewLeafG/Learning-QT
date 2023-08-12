@@ -48,11 +48,11 @@
             </spacer>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_22">
+            <layout class="QHBoxLayout" name="horizontalLayout_22" stretch="1,1,1">
              <item>
               <widget class="QLabel" name="label_20">
                <property name="text">
-                <string>0：</string>
+                <string>固件版本：</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -60,18 +60,27 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBox_3">
-               <property name="maximum">
-                <number>255</number>
+              <widget class="QLineEdit" name="lineEdit_version">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>000-000-000</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_3">
+              <widget class="QCheckBox" name="cb_version">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="text">
                 <string/>
                </property>
                <property name="checkable">
+                <bool>true</bool>
+               </property>
+               <property name="checked">
                 <bool>false</bool>
                </property>
               </widget>
@@ -83,7 +92,7 @@
              <item>
               <widget class="QLabel" name="label_19">
                <property name="text">
-                <string>height_pcm:</string>
+                <string>1.电机减速比:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -92,6 +101,9 @@
              </item>
              <item>
               <widget class="QSpinBox" name="sb_data1">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
                 <number>255</number>
                </property>
@@ -114,7 +126,7 @@
              <item>
               <widget class="QLabel" name="label_18">
                <property name="text">
-                <string>height_origin:</string>
+                <string>2.最低高度:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -123,6 +135,9 @@
              </item>
              <item>
               <widget class="QSpinBox" name="sb_data2">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
                 <number>255</number>
                </property>
@@ -142,7 +157,7 @@
              <item>
               <widget class="QLabel" name="label_17">
                <property name="text">
-                <string>height_max:</string>
+                <string>3.桌面行程:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -151,6 +166,9 @@
              </item>
              <item>
               <widget class="QSpinBox" name="sb_data3">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
                 <number>255</number>
                </property>
@@ -170,7 +188,7 @@
              <item>
               <widget class="QLabel" name="label_16">
                <property name="text">
-                <string>motor_speed:</string>
+                <string>4.运行速度:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -179,6 +197,9 @@
              </item>
              <item>
               <widget class="QSpinBox" name="sb_data4">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
                 <number>255</number>
                </property>
@@ -198,7 +219,7 @@
              <item>
               <widget class="QLabel" name="label_15">
                <property name="text">
-                <string>rst_raise:</string>
+                <string>5.初始化回弹高度:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -207,6 +228,9 @@
              </item>
              <item>
               <widget class="QSpinBox" name="sb_data5">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
                 <number>255</number>
                </property>
@@ -226,7 +250,7 @@
              <item>
               <widget class="QLabel" name="label_14">
                <property name="text">
-                <string>return_distance:</string>
+                <string>6.防夹回弹高度:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -235,6 +259,9 @@
              </item>
              <item>
               <widget class="QSpinBox" name="sb_data6">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
                 <number>255</number>
                </property>
@@ -254,7 +281,7 @@
              <item>
               <widget class="QLabel" name="label_13">
                <property name="text">
-                <string>return_sen:</string>
+                <string>7.防夹灵敏度:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -264,7 +291,7 @@
              <item>
               <widget class="QSpinBox" name="sb_data7">
                <property name="maximum">
-                <number>255</number>
+                <number>8</number>
                </property>
               </widget>
              </item>
@@ -282,7 +309,7 @@
              <item>
               <widget class="QLabel" name="label_12">
                <property name="text">
-                <string>gyro_sen:</string>
+                <string>8.陀螺仪灵敏度:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -292,7 +319,7 @@
              <item>
               <widget class="QSpinBox" name="sb_data8">
                <property name="maximum">
-                <number>255</number>
+                <number>1</number>
                </property>
               </widget>
              </item>
@@ -310,7 +337,7 @@
              <item>
               <widget class="QLabel" name="label_11">
                <property name="text">
-                <string>action_mode:</string>
+                <string>9.公英制:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -320,7 +347,7 @@
              <item>
               <widget class="QSpinBox" name="sb_data9">
                <property name="maximum">
-                <number>255</number>
+                <number>1</number>
                </property>
               </widget>
              </item>
@@ -338,7 +365,7 @@
              <item>
               <widget class="QLabel" name="label_10">
                <property name="text">
-                <string>motor_num:</string>
+                <string>10.初始化电流上:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -347,8 +374,11 @@
              </item>
              <item>
               <widget class="QSpinBox" name="sb_data10">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
-                <number>255</number>
+                <number>10</number>
                </property>
               </widget>
              </item>
@@ -366,7 +396,7 @@
              <item>
               <widget class="QLabel" name="label_9">
                <property name="text">
-                <string>current_up:</string>
+                <string>11.初始化电流下:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -375,8 +405,11 @@
              </item>
              <item>
               <widget class="QSpinBox" name="sb_data11">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
-                <number>255</number>
+                <number>10</number>
                </property>
               </widget>
              </item>
@@ -394,7 +427,7 @@
              <item>
               <widget class="QLabel" name="label_8">
                <property name="text">
-                <string>current_down:</string>
+                <string>12.防夹等级上:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -403,8 +436,11 @@
              </item>
              <item>
               <widget class="QSpinBox" name="sb_data12">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
-                <number>255</number>
+                <number>100</number>
                </property>
               </widget>
              </item>
@@ -422,7 +458,7 @@
              <item>
               <widget class="QLabel" name="label_7">
                <property name="text">
-                <string>m_e_f:</string>
+                <string>13.防夹等级下:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -431,8 +467,11 @@
              </item>
              <item>
               <widget class="QSpinBox" name="sb_data13">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
-                <number>255</number>
+                <number>100</number>
                </property>
               </widget>
              </item>
@@ -450,7 +489,7 @@
              <item>
               <widget class="QLabel" name="label_22">
                <property name="text">
-                <string>14：</string>
+                <string>14.点动距离:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -458,19 +497,22 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBox">
+              <widget class="QSpinBox" name="sb_data14">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
-                <number>255</number>
+                <number>10</number>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox">
+              <widget class="QCheckBox" name="chk_data14">
                <property name="text">
                 <string/>
                </property>
                <property name="checkable">
-                <bool>false</bool>
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -481,7 +523,7 @@
              <item>
               <widget class="QLabel" name="label_21">
                <property name="text">
-                <string>15：</string>
+                <string>15.马达数量：</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -489,19 +531,22 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBox_2">
+              <widget class="QSpinBox" name="sb_data15">
+               <property name="minimum">
+                <number>1</number>
+               </property>
                <property name="maximum">
-                <number>255</number>
+                <number>10</number>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QCheckBox" name="checkBox_2">
+              <widget class="QCheckBox" name="chk_data15">
                <property name="text">
                 <string/>
                </property>
                <property name="checkable">
-                <bool>false</bool>
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -799,7 +844,7 @@
      <x>0</x>
      <y>0</y>
      <width>1022</width>
-     <height>17</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTest">

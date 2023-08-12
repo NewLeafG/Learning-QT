@@ -9,6 +9,7 @@ using namespace std;
 typedef struct
 {
     int cmd;
+    QString ver;
     std::vector<uint8_t> data;
 }msgData;
 
