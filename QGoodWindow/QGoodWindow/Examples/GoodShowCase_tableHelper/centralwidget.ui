@@ -65,7 +65,7 @@
                 <bool>false</bool>
                </property>
                <property name="text">
-                <string>000-000-000</string>
+                <string>xx年xx月xx日</string>
                </property>
               </widget>
              </item>
@@ -523,7 +523,7 @@
              <item>
               <widget class="QLabel" name="label_21">
                <property name="text">
-                <string>15.马达数量：</string>
+                <string>15.马达种类:</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

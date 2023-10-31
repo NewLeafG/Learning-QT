@@ -101,7 +101,7 @@ msgData msg_processer::msg_parser(QByteArray msg)
                     ret.data.push_back(m_readBuffer[9+i]);
                 }
             }
-            ret.ver=QString::number(m_readBuffer[2])+"-"+QString::number(m_readBuffer[3])+"-"+QString::number(m_readBuffer[4]);
+            ret.ver=QString::number(m_readBuffer[2])+"年"+QString::number(m_readBuffer[3])+"月"+QString::number(m_readBuffer[4])+"日";
         }
         rx_num = 0;
         m_readBuffer.clear();
