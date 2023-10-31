@@ -409,6 +409,7 @@ void MainWindow::readData()
         m_central_widget->b_send_clicked=0;
         m_central_widget->ui->textBrowser_receive->append("\r\n");//换行
     }
+    m_central_widget->ui->textBrowser_receive->moveCursor(QTextCursor::End);
 }
 
 void CentralWidget::on_btn_clrReceive_clicked()
@@ -421,7 +422,7 @@ void CentralWidget::on_btn_writeAll_clicked()
     m_cmd_sender = sender();//获取发射信号的对象
 
     QByteArray data_raw,data_send;
-    data_raw.resize(45);
+    data_raw.resize(39);
     data_raw[0]=2;//typeid
     data_raw[1]=1;//attrid
     data_raw[2]=ui->sb_data1->value();//value
