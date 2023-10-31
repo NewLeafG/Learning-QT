@@ -351,6 +351,7 @@ void MainWindow::readData()
 
 //    m_central_widget->ui->textBrowser_receive->append(data);
 //    m_central_widget->ui->textBrowser_receive->append(dataBA.toHex(' ').toUpper());//append接口会自动换行
+    m_central_widget->ui->textBrowser_receive->moveCursor(QTextCursor::End);
     m_central_widget->ui->textBrowser_receive->insertPlainText(dataBA.toHex(' ').toUpper());
     msgData ret = m_central_widget->msg_handler.msg_parser(dataBA);
     if(ret.cmd>0)

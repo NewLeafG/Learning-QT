@@ -59,21 +59,37 @@ public:
         connect(ui->chk_data14,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
         connect(ui->chk_data15,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
 
-        connect(ui->sb_data1,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data2,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data3,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data4,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data5,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data6,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data7,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data8,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data9,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data10,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data11,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data12,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data13,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data14,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
-        connect(ui->sb_data15,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data1,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);//QT5不支持这个connect重载函数
+//        connect(ui->sb_data2,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data3,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data4,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data5,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data6,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data7,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data8,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data9,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data10,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data11,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data12,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data13,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data14,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+//        connect(ui->sb_data15,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
+
+        connect(ui->sb_data1,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data2,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data3,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data4,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data5,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data6,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data7,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data8,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data9,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data10,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data11,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data12,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data13,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data14,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data15,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
 
         connect(timer_1000ms, &QTimer::timeout, this, &CentralWidget::timeout1Hz);
         timer_1000ms->start(1000);
