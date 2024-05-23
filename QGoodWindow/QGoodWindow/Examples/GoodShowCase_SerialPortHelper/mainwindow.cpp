@@ -135,7 +135,7 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
 
     setWindowIcon(qApp->style()->standardIcon(QStyle::SP_DesktopIcon));
     // setWindowTitle("Good Window - CTRL+S toggle theme - CTRL+T toggle title bar!");
-    setWindowTitle("TableHelper 4.5.22");
+    setWindowTitle("TableHelper");
 
     resize(m_central_widget->size());
     move(QGuiApplication::primaryScreen()->availableGeometry().center() - rect().center());
@@ -352,72 +352,13 @@ void MainWindow::readData()
 //    m_central_widget->ui->textBrowser_receive->append(data);
 //    m_central_widget->ui->textBrowser_receive->append(dataBA.toHex(' ').toUpper());//append接口会自动换行
     m_central_widget->ui->textBrowser_receive->moveCursor(QTextCursor::End);
-    m_central_widget->ui->textBrowser_receive->insertPlainText(dataBA.toHex(' ').toUpper());
+    // m_central_widget->ui->textBrowser_receive->insertPlainText(dataBA.toHex(' ').toUpper());
     msgData ret = m_central_widget->msg_handler.msg_parser(dataBA);
     if(ret.cmd>0)
     {
         m_central_widget->ui->textBrowser_receive->append(QTime::currentTime().toString("hh:mm:ss")+": 成功发送指令："+QString::number(ret.cmd)+"\r\n");
-        m_central_widget->ui->lineEdit_version->setText(ret.ver);
-        m_central_widget->ui->cb_version->setChecked(true);
-        QList<QCheckBox*> cbList = this->findChildren<QCheckBox*>();
-        switch (ret.cmd)
-        {
-        case 0x01://SET
-            if("btn_writeAll"==m_central_widget->m_cmd_sender->objectName())
-            {
-                for(int i=0;i<cbList.count();i++)
-                {
-                    cbList[i]->setChecked(true);
-                }
-            }
-            else
-            {
-                QCheckBox* cb = qobject_cast<QCheckBox*>(m_central_widget->m_cmd_sender);//获取发射信号的对象
-                cb->setChecked(true);
-            }
-            break;
-
-        case 0x03://GET
-            for(uint i=0;i<ret.data.size();)
-            {
-                if(2==ret.data[i])//PROTOCOL_PROP_TYPE_UINT8（无符号8位整型）
-                {
-                    QList<QSpinBox *> sb = this->findChildren<QSpinBox *> ("sb_data"+QString::number(ret.data[i+1]));
-                    if(sb.count()>0)
-                    {
-                        sb[0]->setValue(ret.data[i+2]);
-                    }
-                    QList<QCheckBox *> cb = this->findChildren<QCheckBox *> ("chk_data"+QString::number(ret.data[i+1]));
-                    if(cb.count()>0)
-                    {
-                        cb[0]->setChecked(true);
-                    }
-                    i+=3;
-                }
-                else if(4==ret.data[i])//PROTOCOL_PROP_TYPE_UINT16（无符号16位整型）
-                {
-                    QList<QSpinBox *> sb = this->findChildren<QSpinBox *> ("sb_data"+QString::number(ret.data[i+1]));
-                    if(sb.count()>0)
-                    {
-                        sb[0]->setValue(ret.data[i+2]*256+ret.data[i+3]);
-                    }
-                    QList<QCheckBox *> cb = this->findChildren<QCheckBox *> ("chk_data"+QString::number(ret.data[i+1]));
-                    if(cb.count()>0)
-                    {
-                        cb[0]->setChecked(true);
-                    }
-                    i+=4;
-                }
-                else
-                {
-                    i=255;
-                }
-            }
-            break;
-
-        default:
-            break;
-        }
+        QByteArray strMsg=*(new QByteArray(reinterpret_cast<const char*>(ret.data.data()),ret.data.size()));
+        m_central_widget->ui->textBrowser_receive->append(strMsg.toHex(' ').toUpper());
     }
     else if(m_central_widget->b_send_clicked)
     {
@@ -630,80 +571,4 @@ void CentralWidget::serialSend(QByteArray data)
         QMessageBox::critical(this, "设备未连接！", "请先连接设备");
     }
 
-}
-
-void CentralWidget::onOpenCFG()
-{
-    QString fileName = QFileDialog::getOpenFileName(this, "Open File", ".", "Text Files (*.kj);;All Files (*)");
-    if (!fileName.isEmpty())
-    {
-        QSettings *configIniRead = new QSettings(fileName, QSettings::IniFormat);
-        if(!configIniRead->contains("/sub/sb_data16"))
-        {
-            QMessageBox::information(NULL,"Error","配置信息有误！");
-            return;
-        }
-
-        // 将读取到的ini文件保存在QString中，先取值，然后通过toString()函数转换成QString类型
-        ui->sb_data1->setValue(configIniRead->value("/main/sb_data1").toInt());
-        ui->sb_data2->setValue(configIniRead->value("/main/sb_data2").toInt());
-        ui->sb_data3->setValue(configIniRead->value("/main/sb_data3").toInt());
-        ui->sb_data4->setValue(configIniRead->value("/main/sb_data4").toInt());
-        ui->sb_data5->setValue(configIniRead->value("/main/sb_data5").toInt());
-        ui->sb_data6->setValue(configIniRead->value("/main/sb_data6").toInt());
-        ui->sb_data7->setValue(configIniRead->value("/main/sb_data7").toInt());
-        ui->sb_data8->setValue(configIniRead->value("/main/sb_data8").toInt());
-        ui->sb_data9->setValue(configIniRead->value("/sub/sb_data9").toInt());
-        ui->sb_data10->setValue(configIniRead->value("/sub/sb_data10").toInt());
-        ui->sb_data11->setValue(configIniRead->value("/sub/sb_data11").toInt());
-        ui->sb_data12->setValue(configIniRead->value("/sub/sb_data12").toInt());
-        ui->sb_data13->setValue(configIniRead->value("/sub/sb_data13").toInt());
-        ui->sb_data14->setValue(configIniRead->value("/sub/sb_data14").toInt());
-        ui->sb_data15->setValue(configIniRead->value("/sub/sb_data15").toInt());
-        ui->sb_data16->setValue(configIniRead->value("/sub/sb_data16").toInt());
-    }
-}
-
-void CentralWidget::onSaveCFG()
-{
-    QString fileName = QFileDialog::getSaveFileName(this, "Save File", ".", "Text Files (*.kj);");
-    if (!fileName.isEmpty())
-    {
-        // QFile file(fileName);
-        // if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-        // {
-            // QTextStream out(&file);
-            // Qt中使用QSettings类读写ini文件
-            // QSettings构造函数的第一个参数是ini文件的路径,第二个参数表示针对ini文件,第三个参数可以缺省
-            QSettings *configIniWrite = new QSettings(fileName, QSettings::IniFormat);
-            configIniWrite->clear();
-            // 向ini文件中写入内容,setValue函数的两个参数是键值对
-            // 向ini文件的第一个节写入内容,ip节下的第一个参数
-            configIniWrite->setValue("/main/sb_data1", ui->sb_data1->value());
-            configIniWrite->setValue("/main/sb_data2", ui->sb_data2->value());
-            configIniWrite->setValue("/main/sb_data3", ui->sb_data3->value());
-            configIniWrite->setValue("/main/sb_data4", ui->sb_data4->value());
-            configIniWrite->setValue("/main/sb_data5", ui->sb_data5->value());
-            configIniWrite->setValue("/main/sb_data6", ui->sb_data6->value());
-            configIniWrite->setValue("/main/sb_data7", ui->sb_data7->value());
-            configIniWrite->setValue("/main/sb_data8", ui->sb_data8->value());
-            // 向ini文件的第二个节写入内容,port节下的第一个参数
-            configIniWrite->setValue("/sub/sb_data9", ui->sb_data9->value());
-            configIniWrite->setValue("/sub/sb_data10", ui->sb_data10->value());
-            configIniWrite->setValue("/sub/sb_data11", ui->sb_data11->value());
-            configIniWrite->setValue("/sub/sb_data12", ui->sb_data12->value());
-            configIniWrite->setValue("/sub/sb_data13", ui->sb_data13->value());
-            configIniWrite->setValue("/sub/sb_data14", ui->sb_data14->value());
-            configIniWrite->setValue("/sub/sb_data15", ui->sb_data15->value());
-            configIniWrite->setValue("/sub/sb_data16", ui->sb_data16->value());
-            // 写入完成后删除指针
-            delete configIniWrite;
-
-        //     file.close();
-        // }
-        // else
-        // {
-        //     QMessageBox::warning(this, "Error", "Failed to save file.");
-        // }
-    }
 }

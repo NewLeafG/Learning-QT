@@ -93,9 +93,6 @@ public:
         connect(ui->sb_data15,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
         connect(ui->sb_data16,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
 
-        connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(onOpenCFG()));
-        connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(onSaveCFG()));
-
         connect(timer_1000ms, &QTimer::timeout, this, &CentralWidget::timeout1Hz);
         timer_1000ms->start(1000);
 
@@ -136,8 +133,6 @@ private slots:
     void on_sb_data_valueChanged(int arg1);
     void on_btn_clrAll_clicked();
     void timeout1Hz();
-    void onOpenCFG();
-    void onSaveCFG();
 };
 
 class MainWindow : public QGoodWindow
