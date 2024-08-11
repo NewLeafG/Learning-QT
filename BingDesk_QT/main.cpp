@@ -1,19 +1,27 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QFile>
+#include <QProcess>
+#include <QDebug>
+#include <QQmlContext>
+#include <QObject>
+#include "wallpapermanager.h"
+
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    WallpaperManager manager;
+
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/BingDesk_QT/Main.qml"));
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreationFailed,
-        &app,
-        []() { QCoreApplication::exit(-1); },
-        Qt::QueuedConnection);
+    engine.rootContext()->setContextProperty("wallpaperManager", &manager);
     engine.load(url);
+
 
     return app.exec();
 }
+
