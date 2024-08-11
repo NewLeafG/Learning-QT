@@ -61,14 +61,14 @@ msgData msg_processer::msg_parser(QByteArray msg)
         m_readBuffer.push_back(msg[i]);
         if (0xa5 == m_readBuffer[0])
         {
-            if ((rx_num >= (m_readBuffer[7] + 8)) && (rx_num > 7)) // 协议规定length数据有两个字节，现只取低位，也就是长度不能超过255
+            if ((rx_num >= (m_readBuffer[1]-1)) && (rx_num > 2)) //
             {
                 rx_f |= 1;
             }
             else
                 rx_num++;
 
-            if (((rx_num > 1) && (m_readBuffer[1] != 0xa5)) || ((rx_num > 7) &&(m_readBuffer[7] > 200)) )
+            if (m_readBuffer[1] > 200)
             {
                 rx_num = 0; // rec err
                 m_readBuffer[0] = 0;
@@ -93,15 +93,18 @@ msgData msg_processer::msg_parser(QByteArray msg)
         }
         if (sum == m_readBuffer[rx_num])
         {
-            ret.cmd = m_readBuffer[5];
-            if((0x03==ret.cmd)||(0x10==ret.cmd))
+            ret.cmd = m_readBuffer[3];
+            if((0x04==ret.cmd)&&(0x00!= m_readBuffer[5])&&(m_readBuffer[5]<16))
             {
-                for(int i=0;i<m_readBuffer[7]-1;i++)
+                for(int i=0;i<m_readBuffer[1];i++)
                 {
-                    ret.data.push_back(m_readBuffer[9+i]);
+                    ret.data.push_back(m_readBuffer[i]);
                 }
             }
-            ret.ver=QString::number(m_readBuffer[2])+"年"+QString::number(m_readBuffer[3])+"月"+QString::number(m_readBuffer[4])+"日";
+            else
+            {
+                ret.cmd = 0;
+            }
         }
         rx_num = 0;
         m_readBuffer.clear();
