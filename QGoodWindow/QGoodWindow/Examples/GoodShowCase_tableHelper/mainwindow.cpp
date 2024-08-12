@@ -356,6 +356,7 @@ void MainWindow::readData()
     msgData ret = m_central_widget->msg_handler.msg_parser(dataBA);
     if(ret.cmd>0)
     {
+        QByteArray data_send;
         m_central_widget->ui->textBrowser_receive->append(QTime::currentTime().toString("hh:mm:ss")+": 成功发送指令："+QString::number(ret.cmd)+"\r\n");
         m_central_widget->ui->lineEdit_version->setText(ret.ver);
         m_central_widget->ui->cb_version->setChecked(true);
@@ -413,6 +414,13 @@ void MainWindow::readData()
                     i=255;
                 }
             }
+            break;
+
+        case 0x20: // Heartbeat
+            data_send = m_central_widget->msg_handler.pack_Heartbeat();
+            m_central_widget->serialSend(data_send);
+    m_central_widget->ui->lineEdit_send->clear();
+    m_central_widget->ui->lineEdit_send->setText(data_send.toHex(' ').toUpper());
             break;
 
         default:

@@ -21,6 +21,7 @@ public:
 
     QByteArray pack_Get(QByteArray attrid);
     QByteArray pack_Set(QByteArray value); //串口发送数据长度注意不要过长
+    QByteArray pack_Heartbeat(void);
     msgData msg_parser(QByteArray msg);
 
 private:

@@ -51,6 +51,27 @@ QByteArray msg_processer::pack_Set(QByteArray value) //串口发送数据长度�
     return *(new QByteArray(reinterpret_cast<const char*>(ret.data()),ret.size()));
 }
 
+QByteArray msg_processer::pack_Heartbeat(void)
+{
+    vector<uint8_t> ret;
+    ret.push_back(0xa5);
+    ret.push_back(0xa5);
+    ret.push_back(0x03);
+    ret.push_back(0x20);//Heartbeat
+    ret.push_back(0x00);//LEN_H
+    ret.push_back(0x00);//LEN_L
+    ret.push_back(0x00);//msg_id
+    uint8_t sum=0;
+    for (unsigned long long i = 0; i < ret.size(); ++i) {
+        sum+=ret[i];
+    }
+    ret.push_back(sum);
+
+
+    return *(new QByteArray(reinterpret_cast<const char*>(ret.data()),ret.size()));
+}
+
+
 msgData msg_processer::msg_parser(QByteArray msg)
 {
     msgData ret;
