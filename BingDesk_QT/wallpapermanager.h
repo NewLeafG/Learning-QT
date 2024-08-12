@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QtConcurrent>
 
 class WallpaperManager : public QObject
 {
@@ -15,11 +16,11 @@ public slots:
     void fetchWallpaper();
 
 private slots:
-    void onNetworkReply(QNetworkReply *reply);
-    void setWallpaper();
+    void setWallpaper(QString fileName);
 
 private:
     QNetworkAccessManager *networkManager;
+    QList<QSharedPointer<QNetworkReply>> replies;
 };
 
 #endif // WALLPAPERMANAGER_H

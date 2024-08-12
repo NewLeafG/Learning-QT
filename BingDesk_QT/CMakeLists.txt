@@ -4,7 +4,7 @@ project(BingDesk_QT VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Network Qml Quick)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Network Qml Quick Concurrent)
 
 qt_standard_project_setup()
 
@@ -37,6 +37,7 @@ target_link_libraries(appBingDesk_QT PUBLIC
     Qt::Network
     Qt::Qml
     Qt::Quick
+    Qt::Concurrent
 )
 
 include(GNUInstallDirs)
