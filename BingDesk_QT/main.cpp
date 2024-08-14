@@ -8,6 +8,7 @@
 #include <QQmlContext>
 #include <QObject>
 #include "wallpapermanager.h"
+#include <QtQuick/QQuickView>
 
 
 int main(int argc, char *argv[])
@@ -20,6 +21,10 @@ int main(int argc, char *argv[])
     const QUrl url(QStringLiteral("qrc:/BingDesk_QT/Main.qml"));
     engine.rootContext()->setContextProperty("wallpaperManager", &manager);
     engine.load(url);
+    // QQuickView view;
+    // view.setResizeMode(QQuickView::SizeRootObjectToView);
+    // view.setSource(QUrl("qrc:/BingDesk_QT/Main.qml"));
+    // view.show();
 
 
     return app.exec();
