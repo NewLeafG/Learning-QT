@@ -13,8 +13,8 @@ Window {
     // 隐藏标题栏
     flags: Qt.FramelessWindowHint
 
-    // 设置窗口为完全透明
-    color: Qt.rgba(0, 0, 6, 0.6)
+    // 设置窗口为完全透明//”#AARRGGBB”
+    color: "#06000006"
 
     Text {
         id: text_notification
