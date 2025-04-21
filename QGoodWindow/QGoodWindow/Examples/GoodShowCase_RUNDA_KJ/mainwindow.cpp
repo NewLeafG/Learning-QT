@@ -327,22 +327,6 @@ else{
 }
 
 
-void CentralWidget::on_btn_send_clicked()
-{
-//    serialSend(ui->lineEdit_send->text().toUtf8());
-    QByteArray qbyte;
-    QString hex=(ui->lineEdit_send->text()).trimmed();
-
-        QStringList sl=hex.split(" ");
-        foreach(QString s,sl)
-        {
-            if(!s.isEmpty())
-                qbyte.append((char)s.toInt(0,16)&0xFF);
-        }
-    serialSend(qbyte);
-    b_send_clicked=1;
-
-}
 
 void MainWindow::readData()
 {
@@ -351,10 +335,6 @@ void MainWindow::readData()
 
 }
 
-void CentralWidget::on_btn_clrReceive_clicked()
-{
-    ui->textBrowser_receive->clear();
-}
 
 
 

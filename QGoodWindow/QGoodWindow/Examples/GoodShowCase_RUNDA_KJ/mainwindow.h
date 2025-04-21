@@ -78,8 +78,6 @@ private slots:
 
 
     void on_btn_connect_clicked();
-    void on_btn_send_clicked();
-    void on_btn_clrReceive_clicked();
 
     void timeout1Hz();
     void onOpenCFG();
