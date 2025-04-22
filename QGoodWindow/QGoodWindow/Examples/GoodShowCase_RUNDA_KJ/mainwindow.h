@@ -108,6 +108,7 @@ private:
     //Variables
     QGoodCentralWidget *m_good_central_widget;
     CentralWidget *m_central_widget;
+    QByteArray data_rx;
 };
 
 #endif // MAINWINDOW_H

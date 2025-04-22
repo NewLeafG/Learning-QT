@@ -37,8 +37,7 @@ SOFTWARE.
 
 #include "mainwindow.h"
 #include <QSerialPortInfo>
-#include<string>
-#include <QTextCodec>
+#include <string>
 
 static const char blankString[] = QT_TRANSLATE_NOOP("SettingsDialog", "N/A");
 
@@ -68,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
 #ifndef Q_OS_MAC
     QMenuBar *menu_bar = m_central_widget->menuBar();
 
-    //Set font of menu bar
+    // Set font of menu bar
     QFont font = menu_bar->font();
     font.setPixelSize(qRound(12 * pixelRatio()));
 #ifdef Q_OS_WIN
@@ -78,11 +77,11 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
 #endif
     menu_bar->setFont(font);
 
-    QTimer::singleShot(0, this, [=]{
+    QTimer::singleShot(0, this, [=]
+                       {
         menu_bar->setFixedWidth(menu_bar->sizeHint().width());
         const int title_bar_height = m_good_central_widget->titleBarHeight();
-        menu_bar->setStyleSheet(QString("QMenuBar {height: %0px;}").arg(title_bar_height));
-    });
+        menu_bar->setStyleSheet(QString("QMenuBar {height: %0px;}").arg(title_bar_height)); });
 
     m_good_central_widget->setLeftTitleBarWidget(menu_bar);
 #endif
@@ -104,7 +103,7 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
     QLabel *label = new QLabel("润达医疗", widget);
     label->setAttribute(Qt::WA_TransparentForMouseEvents);
 
-//    layout->addWidget(button);
+    //    layout->addWidget(button);
     layout->addWidget(label);
 
     m_good_central_widget->setRightTitleBarWidget(widget, true);
@@ -112,23 +111,20 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
 
     connect(qGoodStateHolder, &QGoodStateHolder::currentThemeChanged, this, &MainWindow::themeChange);
 
-    connect(this, &QGoodWindow::systemThemeChanged, this, [=]{
-        qGoodStateHolder->setCurrentThemeDark(QGoodWindow::isSystemThemeDark());
-    });
+    connect(this, &QGoodWindow::systemThemeChanged, this, [=]
+            { qGoodStateHolder->setCurrentThemeDark(QGoodWindow::isSystemThemeDark()); });
 
     QShortcut *shortcut1 = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_S), this);
 
-    connect(shortcut1, &QShortcut::activated, this, [=]{
-        qGoodStateHolder->setCurrentThemeDark(!qGoodStateHolder->isCurrentThemeDark());
-    });
+    connect(shortcut1, &QShortcut::activated, this, [=]
+            { qGoodStateHolder->setCurrentThemeDark(!qGoodStateHolder->isCurrentThemeDark()); });
 
     QShortcut *shortcut2 = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_T), this);
 
-    connect(shortcut2, &QShortcut::activated, this, [=]{
-        m_good_central_widget->setTitleBarVisible(!m_good_central_widget->isTitleBarVisible());
-    });
+    connect(shortcut2, &QShortcut::activated, this, [=]
+            { m_good_central_widget->setTitleBarVisible(!m_good_central_widget->isTitleBarVisible()); });
 
-//    qGoodStateHolder->setCurrentThemeDark(QGoodWindow::isSystemThemeDark());
+    //    qGoodStateHolder->setCurrentThemeDark(QGoodWindow::isSystemThemeDark());
     qGoodStateHolder->setCurrentThemeDark(true);
 
     m_good_central_widget->setCentralWidget(m_central_widget);
@@ -143,15 +139,13 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
 
     m_central_widget->fillPortsInfo();
     m_central_widget->fillPortsParameters();
-    m_central_widget->m_serial=new QSerialPort(this);
+    m_central_widget->m_serial = new QSerialPort(this);
     connect(m_central_widget->m_serial, &QSerialPort::readyRead, this, &MainWindow::readData);
     this->setWindowIcon(QIcon(":/img/kj_logo.png"));
-
 }
 
 MainWindow::~MainWindow()
 {
-
 }
 
 void MainWindow::themeChange()
@@ -166,26 +160,26 @@ void MainWindow::themeChange()
 bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
 #endif
 #ifdef QT_VERSION_QT6
-bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result)
+    bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result)
 #endif
 {
 #ifdef QGOODWINDOW
 #ifdef Q_OS_WIN
 #ifdef QT_VERSION_QT5
-    MSG *msg = static_cast<MSG*>(message);
+    MSG *msg = static_cast<MSG *>(message);
 
     switch (msg->message)
     {
     case WM_THEMECHANGED:
     case WM_DWMCOMPOSITIONCHANGED:
     {
-        //Keep window theme on Windows theme change events.
-        QTimer::singleShot(100, this, [=]{
+        // Keep window theme on Windows theme change events.
+        QTimer::singleShot(100, this, [=]
+                           {
             if (qGoodStateHolder->isCurrentThemeDark())
                 setAppDarkTheme();
             else
-                setAppLightTheme();
-        });
+                setAppLightTheme(); });
 
         break;
     }
@@ -219,13 +213,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void CentralWidget::fillPortsInfo()
 {
     const auto infos = QSerialPortInfo::availablePorts();
-    if(infos.count()==ui->cb_serialPorts->count())
+    if (infos.count() == ui->cb_serialPorts->count())
         return;
 
     ui->cb_serialPorts->clear();
     const QString blankString = tr(::blankString);
 
-    for (const QSerialPortInfo &info : infos) {
+    for (const QSerialPortInfo &info : infos)
+    {
         QStringList list;
         const QString description = info.description();
         const QString manufacturer = info.manufacturer();
@@ -240,10 +235,10 @@ void CentralWidget::fillPortsInfo()
              << (vendorId ? QString::number(vendorId, 16) : blankString)
              << (productId ? QString::number(productId, 16) : blankString);
 
-        ui->cb_serialPorts->addItem(list.constFirst()+"("+list[1]+")", list);
+        ui->cb_serialPorts->addItem(list.constFirst() + "(" + list[1] + ")", list);
     }
 
-//    ui->cb_serialPorts->addItem(tr("Custom"));
+    //    ui->cb_serialPorts->addItem(tr("Custom"));
 }
 
 void CentralWidget::fillPortsParameters()
@@ -280,18 +275,16 @@ void CentralWidget::fillPortsParameters()
 void CentralWidget::on_cb_serialPorts_activated(int index)
 {
     QList<QSerialPortInfo> ports = QSerialPortInfo::availablePorts();
-    if(ports.size()!=ui->cb_serialPorts->count())
+    if (ports.size() != ui->cb_serialPorts->count())
     {
         fillPortsInfo();
     }
-
 }
-
 
 void CentralWidget::on_btn_connect_clicked()
 {
-    int idx=ui->cb_serialPorts->currentIndex();
-    if(idx<0)
+    int idx = ui->cb_serialPorts->currentIndex();
+    if (idx < 0)
     {
         QMessageBox::critical(this, "无可用设备！", m_serial->errorString());
         return;
@@ -301,51 +294,83 @@ void CentralWidget::on_btn_connect_clicked()
     {
         m_serial->close();
         ui->btn_connect->setText("连接");
-        m_b_connected=0;
+        m_b_connected = 0;
     }
-else{
-    const QStringList list = ui->cb_serialPorts->itemData(idx).toStringList();
+    else
+    {
+        const QStringList list = ui->cb_serialPorts->itemData(idx).toStringList();
 
-    m_serial->setPortName(list[0]);
-    const auto baudRateData = ui->cb_baudrate->currentData();
-    m_serial->setBaudRate(baudRateData.value<QSerialPort::BaudRate>());
-    const auto dataBitsData = ui->cb_databits->currentData();
-    m_serial->setDataBits(dataBitsData.value<QSerialPort::DataBits>());
-    const auto parityData = ui->cb_parity->currentData();
-    m_serial->setParity(parityData.value<QSerialPort::Parity>());
-    const auto stopBitsData = ui->cb_stopBits->currentData();
-    m_serial->setStopBits(stopBitsData.value<QSerialPort::StopBits>());
-    const auto flowControlData = ui->cb_flowControl->currentData();
-    m_serial->setFlowControl(flowControlData.value<QSerialPort::FlowControl>());
-    if (m_serial->open(QIODevice::ReadWrite)) {
-        ui->btn_connect->setText("断开连接");
-        m_b_connected=true;
-    } else {
-        QMessageBox::critical(this, tr("Error"), m_serial->errorString());
-
-    }
+        m_serial->setPortName(list[0]);
+        const auto baudRateData = ui->cb_baudrate->currentData();
+        m_serial->setBaudRate(baudRateData.value<QSerialPort::BaudRate>());
+        const auto dataBitsData = ui->cb_databits->currentData();
+        m_serial->setDataBits(dataBitsData.value<QSerialPort::DataBits>());
+        const auto parityData = ui->cb_parity->currentData();
+        m_serial->setParity(parityData.value<QSerialPort::Parity>());
+        const auto stopBitsData = ui->cb_stopBits->currentData();
+        m_serial->setStopBits(stopBitsData.value<QSerialPort::StopBits>());
+        const auto flowControlData = ui->cb_flowControl->currentData();
+        m_serial->setFlowControl(flowControlData.value<QSerialPort::FlowControl>());
+        if (m_serial->open(QIODevice::ReadWrite))
+        {
+            ui->btn_connect->setText("断开连接");
+            m_b_connected = true;
+        }
+        else
+        {
+            QMessageBox::critical(this, tr("Error"), m_serial->errorString());
+        }
     }
 }
-
-
 
 void MainWindow::readData()
 {
+    uint32_t cp, cnt;
+    QString ch;
+
     const QByteArray dataBA = m_central_widget->m_serial->readAll();
-//    QString data(dataBA);
-// 使用UTF-8或GBK转换
-    QTextCodec *codec = QTextCodec::codecForName("GBK");
-     QString text = codec->toUnicode(dataBA);
-m_central_widget->ui->textEdit_content->insertPlainText(text);
+    data_rx += dataBA;
+    //    QString data(dataBA);
+    // 使用UTF-8或GBK转换
+    // QString text = QString::fromUtf8(dataBA);
+    // 使用UTF-8或GBK转换
+    QTextCodec *codec = QTextCodec::codecForName("GB2312");
+    QString text = codec->toUnicode(data_rx);
 
+    // 获取 QTextEdit 的文本光标
+    QTextCursor cursor = m_central_widget->ui->textEdit_content->textCursor();
+
+    // 将光标移动到文档开头
+    cursor.movePosition(QTextCursor::Start);
+    m_central_widget->ui->textEdit_content->clear();
+
+    // 转换为完整的 Unicode 代码点列表
+    // QVector<uint32_t> codePoints = text.toUcs4();
+    // cnt=codePoints.count();
+    // for (int i = 0; i < cnt; i++)
+    // {
+    //     // 将代码点转换为 QString
+    //      cp = codePoints[cnt-i-1];
+    //      ch = QString::fromUcs4(&cp, 1);
+    //     m_central_widget->ui->textEdit_content->insertPlainText(ch);
+    // }
+if(text.contains("润达医疗"))
+{
+    QStringList list = text.split('\n'); // 按逗号分割
+    cnt = list.count();
+
+    for (int i = 0; i < cnt; i++)
+    {
+        m_central_widget->ui->textEdit_content->insertPlainText(list[cnt - 1 - i]);
+        m_central_widget->ui->textEdit_content->append("");
+    }
+    data_rx.clear();
 }
-
-
-
+}
 
 void CentralWidget::timeout1Hz()
 {
-    if(!m_b_connected)
+    if (!m_b_connected)
     {
         fillPortsInfo();
     }
@@ -353,22 +378,22 @@ void CentralWidget::timeout1Hz()
     {
         const auto infos = QSerialPortInfo::availablePorts();
 
-
         const QString blankString = tr(::blankString);
 
-        bool dev_exist=0;
-        for (const QSerialPortInfo &info : infos) {
-            if(info.portName()==m_serial->portName())
+        bool dev_exist = 0;
+        for (const QSerialPortInfo &info : infos)
+        {
+            if (info.portName() == m_serial->portName())
             {
-                dev_exist=1;
+                dev_exist = 1;
             }
         }
 
-        if(!dev_exist)
+        if (!dev_exist)
         {
             m_serial->close();
             ui->btn_connect->setText("连接");
-            m_b_connected=0;
+            m_b_connected = 0;
             QMessageBox::critical(this, "设备已被移除！", m_serial->errorString());
         }
     }
@@ -380,11 +405,10 @@ void CentralWidget::serialSend(QByteArray data)
     {
         m_serial->write(data);
     }
-    else    
+    else
     {
         QMessageBox::critical(this, "设备未连接！", "请先连接设备");
     }
-
 }
 
 void CentralWidget::onOpenCFG()
