@@ -38,6 +38,7 @@ SOFTWARE.
 #include "mainwindow.h"
 #include <QSerialPortInfo>
 #include<string>
+#include <QTextCodec>
 
 static const char blankString[] = QT_TRANSLATE_NOOP("SettingsDialog", "N/A");
 
@@ -332,6 +333,10 @@ void MainWindow::readData()
 {
     const QByteArray dataBA = m_central_widget->m_serial->readAll();
 //    QString data(dataBA);
+// 使用UTF-8或GBK转换
+    QTextCodec *codec = QTextCodec::codecForName("GBK");
+     QString text = codec->toUnicode(dataBA);
+m_central_widget->ui->textEdit_content->insertPlainText(text);
 
 }
 
