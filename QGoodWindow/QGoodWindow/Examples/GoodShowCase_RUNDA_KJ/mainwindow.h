@@ -104,11 +104,16 @@ private:
     bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result);
 #endif
     void closeEvent(QCloseEvent *event);
+    void saveLog(QString fileName_prefix);
+    void refreshFileList(void);
+    void loadSelectedLog(QListWidgetItem *item);
 
     //Variables
     QGoodCentralWidget *m_good_central_widget;
     CentralWidget *m_central_widget;
     QByteArray data_rx;
+    QDir logDir;
+    QListWidget *fileListWidget;
 };
 
 #endif // MAINWINDOW_H

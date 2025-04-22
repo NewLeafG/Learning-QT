@@ -142,6 +142,17 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
     m_central_widget->m_serial = new QSerialPort(this);
     connect(m_central_widget->m_serial, &QSerialPort::readyRead, this, &MainWindow::readData);
     this->setWindowIcon(QIcon(":/img/kj_logo.png"));
+
+    fileListWidget = new QListWidget();
+        fileListWidget->setMinimumHeight(100);
+        fileListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    connect(fileListWidget, &QListWidget::itemClicked, this, &MainWindow::loadSelectedLog);
+    m_central_widget->ui->listFileNames->addWidget(fileListWidget);
+    logDir = QDir("OperatingLogs");
+
+
+    refreshFileList();
+
 }
 
 MainWindow::~MainWindow()
@@ -354,18 +365,44 @@ void MainWindow::readData()
     //      ch = QString::fromUcs4(&cp, 1);
     //     m_central_widget->ui->textEdit_content->insertPlainText(ch);
     // }
-if(text.contains("润达医疗"))
-{
-    QStringList list = text.split('\n'); // 按逗号分割
-    cnt = list.count();
-
-    for (int i = 0; i < cnt; i++)
+    if (text.contains("润达医疗"))
     {
-        m_central_widget->ui->textEdit_content->insertPlainText(list[cnt - 1 - i]);
-        m_central_widget->ui->textEdit_content->append("");
+        QStringList list = text.split('\n'); // 按逗号分割
+        QStringList list_prefix;
+        QString fileName_prefix="";
+        
+        cnt=list.count();
+        for (int i = 0; i < cnt; i++)
+        {
+            m_central_widget->ui->textEdit_content->insertPlainText(list[cnt-1-i]);
+            m_central_widget->ui->textEdit_content->append("");
+            if (list[i].contains("日期"))
+            {
+                list_prefix=list[i].split("：");
+                if (list_prefix.count()>1)
+                {
+                    list_prefix[1].remove(QRegularExpression("[\\s\u3000]")); // 移除所有标准空白符和全角空格
+                    list_prefix[1].remove(QRegularExpression("[\r\n]")); // 移除所有换行符（CR/LF）
+                    fileName_prefix+=list_prefix[1];
+                    fileName_prefix+='-';
+                }                
+            }
+            else if (list[i].contains("运行次数"))
+            {
+                list_prefix=list[i].split("：");
+                if (list_prefix.count()>1)
+                {
+                    list_prefix[1].remove(QRegularExpression("[\\s\u3000]")); // 移除所有标准空白符和全角空格
+                    list_prefix[1].remove(QRegularExpression("[\r\n]")); // 移除所有换行符（CR/LF）
+                    fileName_prefix += list_prefix[1];
+                    fileName_prefix+='-';
+                }                
+            }                       
+        }
+        data_rx.clear();
+        fileName_prefix+="(";
+        saveLog(fileName_prefix);
     }
-    data_rx.clear();
-}
 }
 
 void CentralWidget::timeout1Hz()
@@ -425,4 +462,81 @@ void CentralWidget::onSaveCFG()
     if (!fileName.isEmpty())
     {
     }
+}
+
+void MainWindow::saveLog(QString fileName_prefix) {
+    QTextEdit * textEdit =m_central_widget->ui->textEdit_content;
+    // 确保日志内容不为空
+    if (textEdit->toPlainText().isEmpty()) {
+        qDebug() << "日志内容为空，未执行保存操作";
+        return;
+    }
+
+    // 创建日志目录
+    QDir logDir("OperatingLogs");
+    if (!logDir.exists()) {
+        if (!logDir.mkpath(".")) {
+            qDebug() << "无法创建日志目录";
+            return;
+        }
+    }
+
+    // 生成文件名（Windows合法格式）
+    QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss");
+    QString fileName = fileName_prefix+QString("%1).txt").arg(timestamp);
+    QString filePath = logDir.filePath(fileName);
+
+    // 写入文件
+    QFile file(filePath);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream stream(&file);
+        stream << textEdit->toPlainText();
+        file.close();
+        qDebug() << "日志保存成功：" << filePath;
+        // textEdit->clear();  // 可选：保存后清空编辑框
+
+        refreshFileList();
+        auto items = fileListWidget->findItems(timestamp, Qt::MatchExactly);
+        if (!items.isEmpty())
+        {
+            fileListWidget->setCurrentItem(items.first());
+            fileListWidget->scrollToItem(items.first());
+        }
+    }
+    else
+    {
+        qDebug() << "文件保存失败：" << file.errorString();
+    }
+}
+
+void MainWindow::refreshFileList() {
+    fileListWidget->clear();
+    QStringList logFiles = logDir.entryList(QStringList() << "*.txt", QDir::Files, QDir::Name | QDir::Reversed);
+    
+    foreach (QString file, logFiles) {
+        QFileInfo fi(file);
+        QListWidgetItem *item = new QListWidgetItem(fi.baseName());
+        item->setData(Qt::UserRole, fi.fileName());
+        fileListWidget->addItem(item);
+    }
+}
+
+void MainWindow::loadSelectedLog(QListWidgetItem *item) {
+    QString fileName = item->data(Qt::UserRole).toString();
+    QString filePath = logDir.filePath(fileName);
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "错误", "无法打开文件: " + file.errorString());
+        return;
+    }
+
+    QTextStream stream(&file);
+    m_central_widget->ui->textEdit_content->setPlainText(stream.readAll());
+    file.close();
+    
+    // 自动滚动到底部
+    QScrollBar *scrollBar = m_central_widget->ui->textEdit_content->verticalScrollBar();
+    scrollBar->setValue(scrollBar->maximum());
 }
