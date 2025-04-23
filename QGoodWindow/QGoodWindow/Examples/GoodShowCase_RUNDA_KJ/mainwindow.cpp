@@ -63,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
 
     m_good_central_widget = new QGoodCentralWidget(this);
 
-#ifdef QGOODWINDOW
+// #ifdef QGOODWINDOW
 #ifndef Q_OS_MAC
     QMenuBar *menu_bar = m_central_widget->menuBar();
 
@@ -100,6 +100,9 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
     //     m_good_central_widget->setActiveBorderColor(!m_good_central_widget->isTitleVisible() ? Qt::red : QColor());
     // });
 
+    btn_switchLang = new QPushButton(tr("English"), widget);
+    layout->addWidget(btn_switchLang);
+
     QLabel *label = new QLabel("润达医疗", widget);
     label->setAttribute(Qt::WA_TransparentForMouseEvents);
 
@@ -107,7 +110,7 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
     layout->addWidget(label);
 
     m_good_central_widget->setRightTitleBarWidget(widget, true);
-#endif
+// #endif
 
     connect(qGoodStateHolder, &QGoodStateHolder::currentThemeChanged, this, &MainWindow::themeChange);
 
@@ -144,14 +147,19 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
     this->setWindowIcon(QIcon(":/img/kj_logo.png"));
 
     fileListWidget = new QListWidget();
-        fileListWidget->setMinimumHeight(100);
-        fileListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    fileListWidget->setMinimumHeight(100);
+    fileListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     connect(fileListWidget, &QListWidget::itemClicked, this, &MainWindow::loadSelectedLog);
     m_central_widget->ui->listFileNames->addWidget(fileListWidget);
     logDir = QDir("OperatingLogs");
 
-
     refreshFileList();
+    translator = new QTranslator(this);
+    currentLang = "en_US"; // 默认英文
+    loadLanguage("en_US"); // 加载默认语言
+
+// 在UI中连接按钮的点击信号到switchLanguage槽
+QObject::connect(btn_switchLang, &QPushButton::clicked, this, &MainWindow::switchLanguage);
 
 }
 
@@ -209,7 +217,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     msgbox.setIcon(QMessageBox::Question);
     msgbox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgbox.setDefaultButton(QMessageBox::No);
-    msgbox.setText("Are you sure to close?");
+    msgbox.setText(tr("确定要关闭吗？"));
     msgbox.setWindowTitle("kjdq");
 
     int result = QGoodCentralWidget::execDialogWithWindow(&msgbox, this, m_good_central_widget);
@@ -254,8 +262,8 @@ void CentralWidget::fillPortsInfo()
 
 void CentralWidget::fillPortsParameters()
 {
-    ui->cb_baudrate->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
     ui->cb_baudrate->addItem(QStringLiteral("9600"), QSerialPort::Baud9600);
+    ui->cb_baudrate->addItem(QStringLiteral("19200"), QSerialPort::Baud19200);
     ui->cb_baudrate->addItem(QStringLiteral("38400"), QSerialPort::Baud38400);
     ui->cb_baudrate->addItem(QStringLiteral("115200"), QSerialPort::Baud115200);
     ui->cb_baudrate->addItem(tr("Custom"));
@@ -304,7 +312,7 @@ void CentralWidget::on_btn_connect_clicked()
     if (m_serial->isOpen())
     {
         m_serial->close();
-        ui->btn_connect->setText("连接");
+        ui->btn_connect->setText(tr("连接"));
         m_b_connected = 0;
     }
     else
@@ -324,7 +332,7 @@ void CentralWidget::on_btn_connect_clicked()
         m_serial->setFlowControl(flowControlData.value<QSerialPort::FlowControl>());
         if (m_serial->open(QIODevice::ReadWrite))
         {
-            ui->btn_connect->setText("断开连接");
+            ui->btn_connect->setText(tr("断开连接"));
             m_b_connected = true;
         }
         else
@@ -353,7 +361,6 @@ void MainWindow::readData()
 
     // 将光标移动到文档开头
     cursor.movePosition(QTextCursor::Start);
-    m_central_widget->ui->textEdit_content->clear();
 
     // 转换为完整的 Unicode 代码点列表
     // QVector<uint32_t> codePoints = text.toUcs4();
@@ -369,38 +376,39 @@ void MainWindow::readData()
     {
         QStringList list = text.split('\n'); // 按逗号分割
         QStringList list_prefix;
-        QString fileName_prefix="";
-        
-        cnt=list.count();
+        QString fileName_prefix = "";
+        m_central_widget->ui->textEdit_content->clear();
+
+        cnt = list.count();
         for (int i = 0; i < cnt; i++)
         {
-            m_central_widget->ui->textEdit_content->insertPlainText(list[cnt-1-i]);
+            m_central_widget->ui->textEdit_content->insertPlainText(list[cnt - 1 - i]);
             m_central_widget->ui->textEdit_content->append("");
             if (list[i].contains("日期"))
             {
-                list_prefix=list[i].split("：");
-                if (list_prefix.count()>1)
+                list_prefix = list[i].split("：");
+                if (list_prefix.count() > 1)
                 {
                     list_prefix[1].remove(QRegularExpression("[\\s\u3000]")); // 移除所有标准空白符和全角空格
-                    list_prefix[1].remove(QRegularExpression("[\r\n]")); // 移除所有换行符（CR/LF）
-                    fileName_prefix+=list_prefix[1];
-                    fileName_prefix+='-';
-                }                
+                    list_prefix[1].remove(QRegularExpression("[\r\n]"));      // 移除所有换行符（CR/LF）
+                    fileName_prefix += list_prefix[1];
+                    fileName_prefix += '-';
+                }
             }
             else if (list[i].contains("运行次数"))
             {
-                list_prefix=list[i].split("：");
-                if (list_prefix.count()>1)
+                list_prefix = list[i].split("：");
+                if (list_prefix.count() > 1)
                 {
                     list_prefix[1].remove(QRegularExpression("[\\s\u3000]")); // 移除所有标准空白符和全角空格
-                    list_prefix[1].remove(QRegularExpression("[\r\n]")); // 移除所有换行符（CR/LF）
+                    list_prefix[1].remove(QRegularExpression("[\r\n]"));      // 移除所有换行符（CR/LF）
                     fileName_prefix += list_prefix[1];
-                    fileName_prefix+='-';
-                }                
-            }                       
+                    fileName_prefix += '-';
+                }
+            }
         }
         data_rx.clear();
-        fileName_prefix+="(";
+        fileName_prefix += "(";
         saveLog(fileName_prefix);
     }
 }
@@ -464,18 +472,22 @@ void CentralWidget::onSaveCFG()
     }
 }
 
-void MainWindow::saveLog(QString fileName_prefix) {
-    QTextEdit * textEdit =m_central_widget->ui->textEdit_content;
+void MainWindow::saveLog(QString fileName_prefix)
+{
+    QTextEdit *textEdit = m_central_widget->ui->textEdit_content;
     // 确保日志内容不为空
-    if (textEdit->toPlainText().isEmpty()) {
+    if (textEdit->toPlainText().isEmpty())
+    {
         qDebug() << "日志内容为空，未执行保存操作";
         return;
     }
 
     // 创建日志目录
     QDir logDir("OperatingLogs");
-    if (!logDir.exists()) {
-        if (!logDir.mkpath(".")) {
+    if (!logDir.exists())
+    {
+        if (!logDir.mkpath("."))
+        {
             qDebug() << "无法创建日志目录";
             return;
         }
@@ -483,7 +495,7 @@ void MainWindow::saveLog(QString fileName_prefix) {
 
     // 生成文件名（Windows合法格式）
     QString timestamp = QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss");
-    QString fileName = fileName_prefix+QString("%1).txt").arg(timestamp);
+    QString fileName = fileName_prefix + QString("%1).txt").arg(timestamp);
     QString filePath = logDir.filePath(fileName);
 
     // 写入文件
@@ -510,11 +522,13 @@ void MainWindow::saveLog(QString fileName_prefix) {
     }
 }
 
-void MainWindow::refreshFileList() {
+void MainWindow::refreshFileList()
+{
     fileListWidget->clear();
     QStringList logFiles = logDir.entryList(QStringList() << "*.txt", QDir::Files, QDir::Name | QDir::Reversed);
-    
-    foreach (QString file, logFiles) {
+
+    foreach (QString file, logFiles)
+    {
         QFileInfo fi(file);
         QListWidgetItem *item = new QListWidgetItem(fi.baseName());
         item->setData(Qt::UserRole, fi.fileName());
@@ -522,12 +536,14 @@ void MainWindow::refreshFileList() {
     }
 }
 
-void MainWindow::loadSelectedLog(QListWidgetItem *item) {
+void MainWindow::loadSelectedLog(QListWidgetItem *item)
+{
     QString fileName = item->data(Qt::UserRole).toString();
     QString filePath = logDir.filePath(fileName);
 
     QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
         QMessageBox::warning(this, "错误", "无法打开文件: " + file.errorString());
         return;
     }
@@ -535,8 +551,37 @@ void MainWindow::loadSelectedLog(QListWidgetItem *item) {
     QTextStream stream(&file);
     m_central_widget->ui->textEdit_content->setPlainText(stream.readAll());
     file.close();
-    
+
     // 自动滚动到底部
     QScrollBar *scrollBar = m_central_widget->ui->textEdit_content->verticalScrollBar();
     scrollBar->setValue(scrollBar->maximum());
 }
+
+void MainWindow::changeEvent(QEvent *event) {
+    if (event->type() == QEvent::LanguageChange) {
+        m_central_widget->ui->retranslateUi(this); // 更新界面文本
+        if ("zh_CN"==currentLang)
+        {
+            btn_switchLang->setText("中文");
+        }
+        else
+        {
+            btn_switchLang->setText("English");
+        }
+        
+    }
+    QMainWindow::changeEvent(event);
+}
+
+void MainWindow::switchLanguage() {
+    currentLang = (currentLang == "en_US") ? "zh_CN" : "en_US";
+    loadLanguage(currentLang);
+}
+
+void MainWindow::loadLanguage(const QString &lang) {
+    QApplication::removeTranslator(translator);
+    if (translator->load(":/translations/" + lang + ".qm")) {
+        QApplication::installTranslator(translator);
+    }
+}
+

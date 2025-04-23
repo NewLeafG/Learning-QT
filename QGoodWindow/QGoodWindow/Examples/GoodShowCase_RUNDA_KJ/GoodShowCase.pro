@@ -46,3 +46,6 @@ RC_ICONS=kj_logo.ico
 
 RESOURCES += \
     images.qrc
+
+TRANSLATIONS = translations/en_US.ts translations/zh_CN.ts
+

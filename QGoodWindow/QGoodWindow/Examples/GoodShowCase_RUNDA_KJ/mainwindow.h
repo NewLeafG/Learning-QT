@@ -35,6 +35,7 @@ SOFTWARE.
 #include <QSerialPort>
 #include "msg_processer.h"
 #include <QTimer>
+#include <QTranslator>
 
 class CentralWidget : public QMainWindow
 {
@@ -91,9 +92,13 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    protected:
+    void changeEvent(QEvent *event) override; // 处理语言变更事件
+
 private slots:
     void themeChange();
     void readData();
+    void switchLanguage(); // 切换语言的槽函数
 
 private:
     //Functions
@@ -107,6 +112,7 @@ private:
     void saveLog(QString fileName_prefix);
     void refreshFileList(void);
     void loadSelectedLog(QListWidgetItem *item);
+    void loadLanguage(const QString &lang);
 
     //Variables
     QGoodCentralWidget *m_good_central_widget;
@@ -114,6 +120,9 @@ private:
     QByteArray data_rx;
     QDir logDir;
     QListWidget *fileListWidget;
+    QTranslator *translator;
+    QString currentLang;
+    QPushButton *btn_switchLang;
 };
 
 #endif // MAINWINDOW_H
