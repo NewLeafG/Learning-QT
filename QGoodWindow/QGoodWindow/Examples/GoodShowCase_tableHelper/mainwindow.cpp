@@ -135,7 +135,7 @@ MainWindow::MainWindow(QWidget *parent) : QGoodWindow(parent)
 
     setWindowIcon(qApp->style()->standardIcon(QStyle::SP_DesktopIcon));
     // setWindowTitle("Good Window - CTRL+S toggle theme - CTRL+T toggle title bar!");
-    setWindowTitle("TableHelper 4.5.22");
+    setWindowTitle("TableHelper 4.5.32");
 
     resize(m_central_widget->size());
     move(QGuiApplication::primaryScreen()->availableGeometry().center() - rect().center());
@@ -446,7 +446,7 @@ void CentralWidget::on_btn_writeAll_clicked()
 
     uint index=0;
     QByteArray data_raw,data_send;
-    data_raw.resize(4*1+3*15);
+    data_raw.resize(4*1+3*16);
     data_raw[index++]=4;//typeid
     data_raw[index++]=1;//attrid
     data_raw[index++]=ui->sb_data1->value()/256;//value1-H
@@ -496,6 +496,9 @@ void CentralWidget::on_btn_writeAll_clicked()
     data_raw[index++]=2;//typeid
     data_raw[index++]=16;//attrid
     data_raw[index++]=ui->sb_data16->value();//value16
+    data_raw[index++]=2;//typeid
+    data_raw[index++]=17;//attrid
+    data_raw[index++]=ui->sb_data17->value();//value17
     data_send=msg_handler.pack_Set(data_raw);
     serialSend(data_send);
     ui->lineEdit_send->clear();
@@ -506,7 +509,7 @@ void CentralWidget::on_btn_writeAll_clicked()
 void CentralWidget::on_btn_readAll_clicked()
 {
     QByteArray data_raw,data_send;
-    data_raw.resize(15);//attrId
+    data_raw.resize(17);//attrId
     data_raw[0]=1;
     data_raw[1]=2;
     data_raw[2]=3;
@@ -523,6 +526,7 @@ void CentralWidget::on_btn_readAll_clicked()
     data_raw[13]=14;
     data_raw[14]=15;
     data_raw[15]=16;
+    data_raw[16]=17;
     data_send=msg_handler.pack_Get(data_raw);
     serialSend(data_send);
     ui->lineEdit_send->clear();
@@ -669,6 +673,7 @@ void CentralWidget::onOpenCFG()
         ui->sb_data14->setValue(configIniRead->value("/sub/sb_data14").toInt());
         ui->sb_data15->setValue(configIniRead->value("/sub/sb_data15").toInt());
         ui->sb_data16->setValue(configIniRead->value("/sub/sb_data16").toInt());
+        ui->sb_data17->setValue(configIniRead->value("/sub/sb_data17").toInt());
     }
 }
 
@@ -704,7 +709,8 @@ void CentralWidget::onSaveCFG()
             configIniWrite->setValue("/sub/sb_data14", ui->sb_data14->value());
             configIniWrite->setValue("/sub/sb_data15", ui->sb_data15->value());
             configIniWrite->setValue("/sub/sb_data16", ui->sb_data16->value());
-            // 写入完成后删除指针
+             configIniWrite->setValue("/sub/sb_data17", ui->sb_data17->value());
+           // 写入完成后删除指针
             delete configIniWrite;
 
         //     file.close();
