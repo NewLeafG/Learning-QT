@@ -60,6 +60,7 @@ public:
         connect(ui->chk_data15,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
         connect(ui->chk_data16,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
         connect(ui->chk_data17,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
+        connect(ui->chk_data18,SIGNAL(clicked()),this,SLOT(on_chk_data_clicked()));
 
 //        connect(ui->sb_data1,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);//QT5不支持这个connect重载函数
 //        connect(ui->sb_data2,&QSpinBox::valueChanged,this,&CentralWidget::on_sb_data_valueChanged);
@@ -94,6 +95,7 @@ public:
         connect(ui->sb_data15,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
         connect(ui->sb_data16,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
         connect(ui->sb_data17,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
+        connect(ui->sb_data18,SIGNAL(valueChanged(int)),this,SLOT(on_sb_data_valueChanged(int)));
 
         connect(ui->actionOpen,SIGNAL(triggered()),this,SLOT(onOpenCFG()));
         connect(ui->actionSave,SIGNAL(triggered()),this,SLOT(onSaveCFG()));
